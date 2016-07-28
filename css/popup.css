@@ -1,0 +1,30 @@
+
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+  width: auto;
+  height: auto;
+}
+div {
+  width: 500px;
+  border: 1px solid black;
+}
+
+#container {
+	
+}
+h1 {
+  text-align: center;
+}
+
+p {
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.content {
+	display: none;
+}

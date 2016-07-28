@@ -1,0 +1,6 @@
+"back_up": {
+  "matches": ["https://play.google.com/music/listen#/*"]
+}
+
+allow user the change the options of the equalizer within the popup
+figure out way to have it rescale with someones browser

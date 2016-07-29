@@ -2,6 +2,6 @@ I# Audio Equalizer for Google Music
 
 Chrome extension that displays an audio visualizer/equalizer on Google Music.
 
-<img src=“./screenshots/orange.png></img>
-<img src=“./screenshots/blue.png></img>
-<img src=“./screenshots/purple.png></img>
+![Audio equalizer with orange theme](/screenshots/orange.png?raw=true “Orange”)
+![Audio equalizer with blue theme](/screenshots/blue.png?raw=true “Blue”)
+![Audio equalizer with purple theme](/screenshots/purple.png?raw=true “Purple”)

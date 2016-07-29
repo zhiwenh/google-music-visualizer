@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Google Music Equalizer",
-  "description": "Audio equalizer for Google Music",
-  "version": "1.0",
+  "description": "Audio visualizer/equalizer for Google Music",
+  "version": "1.2",
 
   "icons": {
     "16": "icons/icon.png",
@@ -14,7 +14,8 @@
       "persistent": false
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "https://play.google.com/music/*"
   ],
   "browser_action": {
     "default_icon": "icons/icon.png",

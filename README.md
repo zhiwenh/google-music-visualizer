@@ -1,3 +1,3 @@
-# Audio Equalizer Chrome
+# Audio Equalizer for Google Music
 
-A Chrome extension that will make an equalizer for audio tags on a page 
+Chrome extension that displays an audio visualizer/equalizer on Google Music.

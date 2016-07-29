@@ -1,10 +1,12 @@
-
 function D3MusicEqualizer() {
   this.container = null;
   // add options for these later changing svgheight effects the position styling as well
-  this.containerHeight = 700;
-  this.containerWidth = 3000;
+  this.containerHeight = 800;
+  this.containerWidth = 2500;
   this.barPadding = 1; // space between the bars
+  this.barHeight = function(d) {
+    return (d * 0.3) + (d / 225 * 40) + (d / 225 * 330);
+  };
 
   this.interval = 20;
   this._intervalHandle = null;
@@ -53,7 +55,7 @@ function D3MusicEqualizer() {
     this.analyser = this._context.createAnalyser();
 
     // d3 equalizer related
-    this.container = d3.select(parent).append('svg').attr('height', this.containerHeight).attr('width', this.containerWidth);
+    this.container = d3.select(parent).insert('svg').attr('height', this.containerHeight).attr('width', this.containerWidth);
   };
 
   // allows rebinding of audio analyser and frequencyData
@@ -71,14 +73,14 @@ function D3MusicEqualizer() {
 
     this._source.connect(this.analyser);
     this._source.connect(this._context.destination);
-    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount/this.frequencyDataDivide);
+    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount / this.frequencyDataDivide);
 
     this.container
       .selectAll('rect')
       .data(this.frequencyData)
       .enter()
       .append('rect')
-      .attr('x',(d, i) => {
+      .attr('x', (d, i) => {
         return i * (this.containerWidth / this.frequencyData.length);
       })
       .attr('width', this.containerWidth / this.frequencyData.length - this.barPadding);
@@ -87,58 +89,53 @@ function D3MusicEqualizer() {
   this.render = function() {
     console.log('render start');
     this.isPlaying = true;
+
     function render() {
       this.analyser.getByteFrequencyData(this.frequencyData); // now frequencyData array has
       this.container.selectAll('rect')
         .data(this.frequencyData)
         .attr('y', (d) => {
-          return this.containerHeight - d;
+          return this.containerHeight - this.barHeight(d);
         })
         .attr('height', (d) => {
-          return d/225 * 80 + d/225 * 500;
+          return this.barHeight(d);
         })
         .attr('opacity', (d) => {
           return this.opacity;
         })
-        .attr('transition', (d) => {
-          return 0.3;
-        })
         .attr('fill', (d) => {
           if (this.color === 'purple') {
-            return 'rgb(' + d +  ',' + 30 + ',' + 200 + ')';
+            return "hsl(" + (350 - d / 255 * 10 - d / 255 * 130) + ",95%,55%)";
+          } else if (this.color === 'blue') {
+            return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
           } else if (this.color === 'green') {
-            return 'rgb(' + 100 +  ',' + 200 + ',' + d + ')';
-          } else if (this.color === 'neon') {
-            return 'rgb(' + (d + 50) +  ',' + 255 + ',' + 0 + ')';
+            return 'rgb(' + (d + 50) + ',' + 255 + ',' + 0 + ')';
           } else if (this.color === 'red') {
-            return 'rgb(' + (255 - d) +  ',' + 0 + ',' + 0 + ')';
+            return "hsl(" + (0 + d / 255 * 40) + "," + (100) + "%," + (40 + d / 255 * 50) + "%)";
           } else if ('orange') {
-            return "hsl(" + (3 + d / 255 * 5 + d / 255 * 47) + ",95%,55%)";
-          } else if ('random') {
-            return "hsl(" + (Math.random() * 360) + ",100%,50%)";
+            return "hsl(" + (0 + d / 255 * 5 + d / 255 * 60) + ",95%,55%)";
           } else {
-            // orange by default
-            return "hsl(" + (10 + d / 255 * 50) + ",95%,55%)";
+            return "hsl(" + (3 + d / 255 * 5 + d / 255 * 47) + ",95%,55%)";
           }
-        })
-        .style('border-top', '5px solid black');
+        });
     }
 
     this._intervalHandle = setInterval(render.bind(this), this.interval);
   };
 
-  this.opacity = function(opacity) {
+  this.setOpacity = function(opacity) {
     this.opacity = opacity;
   };
 
-  this.color = function(color) {
+  this.setColor = function(color) {
     this.color = color;
   };
   // doesnt allow you to change intervals after d3 is rendered;
   // will need a pause and a resume
-  this.interval = function(interval) {
+  this.setInterval = function(interval) {
     this.interval = interval;
   };
+
   // speeds up the interval
   this.faster = function(increase) {
     this.pause();
@@ -155,7 +152,7 @@ function D3MusicEqualizer() {
     this.resume();
   };
 
-  // resume and pause has a bug where if you pause the audio it stops working
+  // stops equalizer bars in place
   this.pause = function() {
     if (this.isPlaying === true) {
       clearInterval(this._intervalHandle);
@@ -164,12 +161,33 @@ function D3MusicEqualizer() {
     }
   };
 
+  // resumes equalize if bars are paused in place
   this.resume = function() {
     if (this.isPlaying === false && this.isInitalized === true) {
       this.render();
     }
   };
 
+  // stops the equalizer bars by making them all 0
+  // to restart call this.render()
+  this.stop = function() {
+    this.container.selectAll('rect')
+      .data(this.frequencyData)
+      .attr('y', (d) => {
+        return 0;
+      })
+      .attr('height', (d) => {
+        return 0;
+      });
+    clearInterval(this._intervalHandle);
+    this._intervalHandle = null;
+  };
+
+  this.start = function() {
+    this.render();
+  };
+
+  // clears the equalizer from DOM. no current way to instantiate
   this.remove = function() {
     clearInterval(this._intervalHandle);
     this.container.remove();

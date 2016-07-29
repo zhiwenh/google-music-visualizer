@@ -1,12 +1,13 @@
 
-function D3MusicFrequency() {
-  this.mainSvg = null;
-  this.mainSvgHeight = 300; // add options for these later
-  this.mainSvgWidth = 1000;
-  this.barPadding = '1';
+function D3MusicEqualizer() {
+  this.container = null;
+  // add options for these later changing svgheight effects the position styling as well
+  this.containerHeight = 700;
+  this.containerWidth = 3000;
+  this.barPadding = 1; // space between the bars
 
-  this.interval = 10;
-  this.intervalHandle = null;
+  this.interval = 20;
+  this._intervalHandle = null;
 
   // equalizer cosmetic properties
   this.opacity = 1;
@@ -16,50 +17,71 @@ function D3MusicFrequency() {
   this.isInitalized = false;
 
   // web audio api variables
-  this.context = null; // new AudioContext
-  this.element = null; // audio tag or stream
-  this.source = null;
+  this._context = null; // new AudioContext
+  this._element = null; // audio tag or stream
+  this._source = null; // audio source
   this.analyser = null; // analyser node that writes frequencyData
   this.frequencyData = null; // sync frequencyData 8bit or 32bit array to D3Music
+  // this.frequencyDataDivide = 4;
+
+  this.options = function(options) {
+    for (var key in options) {
+      this[key] = options[key];
+    }
+  };
+
+  // options that target this.analyser
+  this.analyserOptions = function(options) {
+    for (var key in options) {
+      this.analyser[key] = options[key];
+    }
+  };
+
+  this.containerStyles = function(options) {
+    for (var key in options) {
+      this.container.style(key, options[key]);
+    }
+  };
 
   // generate web audio api and creates svg container for equalizer
   this.create = function(audioElement, parent) {
     console.log('create');
     // web audio related
-    this.context = new AudioContext();
-    this.element = audioElement;
-    this.source = this.context.createMediaElementSource(this.element);
-    this.analyser = this.context.createAnalyser();
-    this.analyser.fftSize = 2048; // default size. add options to change later
-    this.analyser.minDecibels = -95;
-    this.analyser.smoothingTimeConstant = 0.85;
-    this.source.connect(this.analyser);
-    this.source.connect(this.context.destination);
-    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount/8);
+    this._context = new AudioContext();
+    this._element = audioElement;
+    this._source = this._context.createMediaElementSource(this._element);
+    this.analyser = this._context.createAnalyser();
 
     // d3 equalizer related
-    this.mainSvg = d3.select(parent).append('svg').attr('height', this.mainSvgHeight).attr('width', this.mainSvgWidth);
+    this.container = d3.select(parent).append('svg').attr('height', this.containerHeight).attr('width', this.containerWidth);
   };
 
   // allows rebinding of audio analyser and frequencyData
+  // this will require a re initialization
   this.bind = function(analyser, frequencyData) {
     this.analyser = analyser;
     this.frequencyData = frequencyData;
   };
 
-  // creates all the elements that will be manipulated
+  // creates all the equalizer elements to be manipulated and sets up audio connects and
+  // freq data array
   this.initialize = function() {
-    console.log('initialize');
+    console.log('initialized');
     this.isInitalized = true;
-    this.mainSvg
+
+    this._source.connect(this.analyser);
+    this._source.connect(this._context.destination);
+    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount/this.frequencyDataDivide);
+
+    this.container
       .selectAll('rect')
       .data(this.frequencyData)
       .enter()
       .append('rect')
       .attr('x',(d, i) => {
-        return i * (this.mainSvgWidth / this.frequencyData.length);
+        return i * (this.containerWidth / this.frequencyData.length);
       })
-      .attr('width', this.mainSvgWidth / this.frequencyData.length - this.barPadding);
+      .attr('width', this.containerWidth / this.frequencyData.length - this.barPadding);
   };
 
   this.render = function() {
@@ -67,13 +89,13 @@ function D3MusicFrequency() {
     this.isPlaying = true;
     function render() {
       this.analyser.getByteFrequencyData(this.frequencyData); // now frequencyData array has
-      this.mainSvg.selectAll('rect')
+      this.container.selectAll('rect')
         .data(this.frequencyData)
         .attr('y', (d) => {
-          return this.mainSvgHeight - d;
+          return this.containerHeight - d;
         })
         .attr('height', (d) => {
-          return d;
+          return d/225 * 80 + d/225 * 500;
         })
         .attr('opacity', (d) => {
           return this.opacity;
@@ -83,31 +105,26 @@ function D3MusicFrequency() {
         })
         .attr('fill', (d) => {
           if (this.color === 'purple') {
-
-          } else if (this.color === 'lightPurple') {
-            return 'rgb(' + d +  ',' + 40 + ',' + 150 + ')';
+            return 'rgb(' + d +  ',' + 30 + ',' + 200 + ')';
           } else if (this.color === 'green') {
             return 'rgb(' + 100 +  ',' + 200 + ',' + d + ')';
-          } else if (this.color === 'greenPink') {
-            return 'rgb(' + 255 - d +  ',' + 0 + ',' + 0 + ')';
-          } else if (this.color === 'neonYellow') {
+          } else if (this.color === 'neon') {
             return 'rgb(' + (d + 50) +  ',' + 255 + ',' + 0 + ')';
-          } else if (this.color === 'blackRed') {
-            return 'rgb(' + (d + 50) +  ',' + 0 + ',' + 0 + ')';
-          } else if (this.color === 'redBlack') {
+          } else if (this.color === 'red') {
             return 'rgb(' + (255 - d) +  ',' + 0 + ',' + 0 + ')';
-          } else if (this.color === 'orange') {
-            return 'rgb(' + Math.floor( d * 0.6 + 70) +  ',' + 120 + ',' + Math.floor(0) + ')';
-          } else if (this.color === 'darkPurple') {
-            return 'rgb(' + Math.floor( d * 0.90 + 70)  +  ',' + 40 + ',' + 255 + ')';
+          } else if ('orange') {
+            return "hsl(" + (3 + d / 255 * 5 + d / 255 * 47) + ",95%,55%)";
+          } else if ('random') {
+            return "hsl(" + (Math.random() * 360) + ",100%,50%)";
           } else {
-            // purple by default
-            return 'rgb(' + d +  ',' + 30 + ',' + 200 + ')';
+            // orange by default
+            return "hsl(" + (10 + d / 255 * 50) + ",95%,55%)";
           }
-        });
+        })
+        .style('border-top', '5px solid black');
     }
 
-    this.intervalHandle = setInterval(render.bind(this), this.interval);
+    this._intervalHandle = setInterval(render.bind(this), this.interval);
   };
 
   this.opacity = function(opacity) {
@@ -141,8 +158,8 @@ function D3MusicFrequency() {
   // resume and pause has a bug where if you pause the audio it stops working
   this.pause = function() {
     if (this.isPlaying === true) {
-      clearInterval(this.intervalHandle);
-      this.intervalHandle = null;
+      clearInterval(this._intervalHandle);
+      this._intervalHandle = null;
       this.isPlaying = false;
     }
   };
@@ -154,8 +171,8 @@ function D3MusicFrequency() {
   };
 
   this.remove = function() {
-    clearInterval(this.intervalHandle);
-    this.mainSvg.remove();
+    clearInterval(this._intervalHandle);
+    this.container.remove();
   };
 
 }

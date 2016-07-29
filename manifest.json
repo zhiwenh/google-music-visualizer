@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Equalizer",
+  "name": "Google Music Equalizer",
   "description": "Audio equalizer for Google Music",
   "version": "1.0",
 
@@ -18,8 +18,7 @@
   ],
   "browser_action": {
     "default_icon": "icons/icon.png",
-    "default_popup": "popup.html",
-    "default_title": "Equalizer"
+    "default_title": "Google Music Equalizer"
   },
 
   "content_scripts": [
@@ -29,7 +28,7 @@
         "scripts/d3.min.js",
         "scripts/d3-music-equalizer.js",
         "scripts/content.js"
-       ]
+      ]
     }
   ]
 }

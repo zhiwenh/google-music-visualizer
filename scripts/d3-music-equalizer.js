@@ -132,6 +132,9 @@ function D3MusicEqualizer() {
   };
   // doesnt allow you to change intervals after d3 is rendered;
   // will need a pause and a resume
+  this.getInterval = function() {
+    return this.interval;
+  };
   this.setInterval = function(interval) {
     this.interval = interval;
   };
@@ -142,6 +145,7 @@ function D3MusicEqualizer() {
     console.log(this.interval);
     this.interval -= increase;
     this.resume();
+    return this.interval;
   };
 
   // slows down the interval
@@ -150,11 +154,12 @@ function D3MusicEqualizer() {
     console.log(this.interval);
     this.interval += decrease;
     this.resume();
+    return this.interval;
   };
 
   // stops equalizer bars in place
   this.pause = function() {
-    if (this.isPlaying === true) {
+    if (this.isPlaying === true && this.isStopped === false) {
       clearInterval(this._intervalHandle);
       this._intervalHandle = null;
       this.isPlaying = false;
@@ -163,28 +168,36 @@ function D3MusicEqualizer() {
 
   // resumes equalize if bars are paused in place
   this.resume = function() {
-    if (this.isPlaying === false && this.isInitalized === true) {
+    if (this.isPlaying === false && this.isInitalized === true && this.isStopped === false) {
       this.render();
     }
   };
 
   // stops the equalizer bars by making them all 0
   // to restart call this.render()
+  this.isStopped = true;
+
   this.stop = function() {
-    this.container.selectAll('rect')
-      .data(this.frequencyData)
-      .attr('y', (d) => {
-        return 0;
-      })
-      .attr('height', (d) => {
-        return 0;
-      });
-    clearInterval(this._intervalHandle);
-    this._intervalHandle = null;
+    if (this.isStopped === false) {
+      this.isStopped = true;
+      this.container.selectAll('rect')
+        .data(this.frequencyData)
+        .attr('y', (d) => {
+          return 0;
+        })
+        .attr('height', (d) => {
+          return 0;
+        });
+      clearInterval(this._intervalHandle);
+      this._intervalHandle = null;
+    }
   };
 
   this.start = function() {
-    this.render();
+    if (this.isStopped === true) {
+      this.isStopped = false;
+      this.render();
+    }
   };
 
   // clears the equalizer from DOM. no current way to instantiate

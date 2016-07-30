@@ -26,13 +26,13 @@ window.onload = function() {
   equalizer.options({
     color: 'orange',
     opacity: 0.7,
-    interval: 50,
+    interval: 30,
     frequencyDataDivide: 12,
     barPadding: 1.7
   });
 
   equalizer.initialize();
-  equalizer.render();
+  equalizer.start();
 
 
   /* ################################### */
@@ -59,52 +59,72 @@ window.onload = function() {
     userSelect: 'none' // no text highlighting
   });
 
-  // NAME
-  var equalizerName = $('<div>equalizer</div>');
-  equalizerName.appendTo(buttonContainer);
-  equalizerName.css({
+  var cssDefaults = {
+    textAlign: 'center',
+    boxSizing: 'border-box',
+    backgroundColor: '#FFFFFF',
     height: '100%',
     outline: 'none',
     cursor: 'pointer',
+  };
+  // NAME
+  var equalizerName = $('<div>equalizer</div>');
+  equalizerName.appendTo(buttonContainer);
+  equalizerName.css(cssDefaults);
+  equalizerName.css({
     paddingLeft: '5px',
     paddingTop: '2px',
     paddingRight: '3px',
-    textAlign: 'center',
-    boxSizing: 'border-box',
-    backgroundColor: '#FFFFFF'
   });
 
   // COLOR CHANGE BUTTON
   var colorChange = $('<div>orange</div>');
   colorChange.appendTo(buttonContainer);
+  colorChange.css(cssDefaults);
   colorChange.css({
-    height: '100%',
     width: '65px',
-    cursor: 'pointer',
-    outline: 'none',
-    textAlign: 'center',
-    boxSizing: 'border-box',
     paddingTop: '2px',
     marginRight: '22px',
     borderRight: '1px solid #d3d3d3',
-    backgroundColor: '#FFFFFF'
+  });
+
+  // SPEED BUTTONS
+  var speedButtons = [];
+  for (var i = 0; i < 3; i++) {
+    console.log(equalizer.getInterval());
+    var speedButton;
+    if (i === 0) {
+      speedButton = $('<div>-</div>');
+    } else if (i === 2) {
+      speedButton = $('<div>+</div>');
+    } else {
+      speedButton = $('<div></div>');
+    }
+    speedButton.appendTo(buttonContainer);
+    speedButton.css(cssDefaults);
+    speedButton.css({
+      width: '30px',
+      paddingTop: '3px',
+      borderRight: '1px solid #d3d3d3',
+      borderLeft: '1px solid #d3d3d3'
+    });
+    speedButtons.push(speedButton);
+  }
+  speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
+  speedButtons[1].css({
+    cursor: 'default'
   });
 
   // OFF EQUALIZER BUTTON
   var off = $('<div>off</div>');
   off.appendTo(buttonContainer);
+  off.css(cssDefaults);
   off.css({
-    height: '100%',
     width: '35px',
-    cursor: 'pointer',
-    outline: 'none',
-    textAlign: 'center',
-    boxSizing: 'border-box',
     paddingTop: '2px',
     paddingLeft: '5px',
     paddingRight: '5px',
     borderLeft: '1px solid #d3d3d3',
-    backgroundColor: '#FFFFFF'
   });
 
   // array of all the colors in D3MusicEqualizer. iterate thru this with each
@@ -150,7 +170,22 @@ window.onload = function() {
 
   colorChange.on('click', colorToggle);
   equalizerName.on('click', colorToggle);
-  // removes traces of equalizer
+
+  // slow down
+  speedButtons[0].on('click', function() {
+    if (equalizer.getInterval() < 100) {
+      console.log(equalizer.slower(5));
+      speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
+    }
+  });
+  // speed up
+  speedButtons[2].on('click', function() {
+    if (equalizer.getInterval() > 5) {
+      console.log(equalizer.faster(5));
+      speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
+    }
+  });
+
   var isOn = false;
   off.on('click', function() {
     if (isOn === false) {
@@ -163,4 +198,6 @@ window.onload = function() {
       off.text('off');
     }
   });
+
+
 };

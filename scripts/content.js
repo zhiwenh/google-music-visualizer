@@ -62,7 +62,7 @@ window.onload = function() {
   var cssDefaults = {
     textAlign: 'center',
     boxSizing: 'border-box',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgb(250, 250, 250)',
     height: '100%',
     outline: 'none',
     cursor: 'pointer',
@@ -91,7 +91,6 @@ window.onload = function() {
   // SPEED BUTTONS
   var speedButtons = [];
   for (var i = 0; i < 3; i++) {
-    console.log(equalizer.getInterval());
     var speedButton;
     if (i === 0) {
       speedButton = $('<div>-</div>');
@@ -112,9 +111,12 @@ window.onload = function() {
   }
   speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
   speedButtons[1].css({
-    cursor: 'default'
+    cursor: 'default',
+    backgroundColor: 'white'
   });
-
+  speedButtons[2].css({
+    marginRight: '22px'
+  });
   // OFF EQUALIZER BUTTON
   var off = $('<div>off</div>');
   off.appendTo(buttonContainer);
@@ -140,7 +142,6 @@ window.onload = function() {
 
 
   function colorToggle() {
-    console.log(this);
     // change color of equalizer
     equalizer.setColor(colorsArr[colorsIndex][0]);
     // change text color of the display container and background color
@@ -174,14 +175,14 @@ window.onload = function() {
   // slow down
   speedButtons[0].on('click', function() {
     if (equalizer.getInterval() < 100) {
-      console.log(equalizer.slower(5));
+      equalizer.slower(5);
       speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
     }
   });
   // speed up
   speedButtons[2].on('click', function() {
     if (equalizer.getInterval() > 5) {
-      console.log(equalizer.faster(5));
+      equalizer.faster(5);
       speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()));
     }
   });

@@ -204,26 +204,6 @@ window.onload = function() {
     $('#material-app-bar').css({
       background: colorsArr[colorsIndex][1]
     });
-    // $('#middleBar').css({
-    //   background: colorsArr[colorsIndex][1]
-    // });
-    // $('#material-one-left').css({
-    //   color: 'white'
-    // });
-    // $('#browse-stations-tabs').css({
-    //   background: colorsArr[colorsIndex][1]
-    // });
-
-    // changes colors of buttons
-    // not good enough to be used
-    // $('paper-fab').css({
-    //   background: colorsArr[colorsIndex][1]
-    // });
-    // $('paper-button').each(function() {
-    //   $(this).css({
-    //     backgroundColor: colorsArr[colorsIndex][1]
-    //   });
-    // });
     colorChange.text(colorsArr[colorsIndex][0]);
     if (colorsIndex === colorsArr.length - 1) {
       colorsIndex = 0;

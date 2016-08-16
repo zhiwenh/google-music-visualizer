@@ -2,16 +2,12 @@
   "manifest_version": 2,
   "name": "Google Music Equalizer",
   "description": "An audio visualizer and website color transformation for Google Play Music. Features 6 different themes",
-  "version": "1.24",
+  "version": "1.30",
 
   "icons": {
     "16": "icons/icon.png",
     "48": "icons/icon.png",
     "128": "icons/icon.png"
-  },
-  "background": {
-      "scripts": ["scripts/libraries/jquery-3.0.0.min.js"],
-      "persistent": false
   },
   "permissions": [
     "activeTab"

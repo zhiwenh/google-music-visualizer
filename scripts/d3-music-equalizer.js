@@ -2,7 +2,7 @@ function D3MusicEqualizer() {
   this.container = null;
   // add options for these later changing svgheight effects the position styling as well
   this.containerHeight = 2500;
-  this.containerWidth = 2500;
+  this.containerWidth = 2750;
   this.barPadding = 1; // space between the bars
   // function that allows better manipulation of bar heights
   // used in this.render()
@@ -98,34 +98,6 @@ function D3MusicEqualizer() {
       this.analyser.getByteFrequencyData(this.frequencyData); // now frequencyData array has
       this.container.selectAll('rect')
         .data(this.frequencyData)
-        // .attr({
-        //   y: function(d) {
-        //     return this.containerHeight - this.barHeight(d);
-        //   },
-        //   height: function(d) {
-        //     return this.barHeight(d);
-        //   },
-        //   opacity: function(d) {
-        //     return this.opacity;
-        //   },
-        //   fill: function(d) {
-        //     if (this.color === 'purple') {
-        //       return "hsl(" + (353 - d / 255 * 25 - d / 255 * 135) + ",95%,55%)";
-        //     } else if (this.color === 'blue') {
-        //       return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
-        //     } else if (this.color === 'green') {
-        //       return 'rgb(' + (Math.floor(d / 255 * 255) + 35) + ',' + (255 - (Math.floor(d/255) * 100)) + ',' + 0 + ')';
-        //     } else if (this.color === 'red') {
-        //       return "hsl(" + (-15 + d / 255 * 65) + "," + (100) + "%," + (40 + d / 255 * 50) + "%)";
-        //     } else if (this.color === 'orange') {
-        //       return "hsl(" + (0  + d / 255 * 10 + d / 255 * 65) + ",95%,55%)";
-        //     } else if (this.color === 'gray') {
-        //       return "hsl(" + 180 + "," + (3) + "%," + (97 - d / 255 * 95) + "%)";
-        //     } else {
-        //       return "hsl(" + (0 + d / 255 * 10 + d / 255 * 65) + ",95%,55%)";
-        //     }
-        //   }
-        // });
         .attr('y', (d) => {
           return this.containerHeight - this.barHeight(d);
         })
@@ -137,19 +109,20 @@ function D3MusicEqualizer() {
         })
         .attr('fill', (d) => {
           if (this.color === 'purple') {
-            return "hsl(" + (353 - d / 255 * 25 - d / 255 * 135) + ",95%,55%)";
+            return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100) + "%," + (50 + d / 255 * 15) + "%)";
           } else if (this.color === 'blue') {
             return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
           } else if (this.color === 'green') {
-            return 'rgb(' + (Math.floor(d / 255 * 255) + 35) + ',' + (255 - (Math.floor(d/255) * 100)) + ',' + 0 + ')';
+            return "hsl(" + (130 - d / 255 * 15 - d / 255 * 85) + "," + (100) + "%," + (40 + d / 255 * 30) + "%)";
           } else if (this.color === 'red') {
-            return "hsl(" + (-15 + d / 255 * 65) + "," + (100) + "%," + (40 + d / 255 * 50) + "%)";
+            return "hsl(" + (-15 + d / 255 * 15 + d / 255 * 65) + "," + (100) + "%," + (40 + d / 255 * 30) + "%)";
           } else if (this.color === 'orange') {
-            return "hsl(" + (0  + d / 255 * 10 + d / 255 * 65) + ",95%,55%)";
+            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
           } else if (this.color === 'gray') {
             return "hsl(" + 180 + "," + (3) + "%," + (97 - d / 255 * 95) + "%)";
           } else {
-            return "hsl(" + (0 + d / 255 * 10 + d / 255 * 65) + ",95%,55%)";
+            // default is orange
+            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
           }
         });
     }
@@ -172,7 +145,6 @@ function D3MusicEqualizer() {
   this.setInterval = function(interval) {
     this.interval = interval;
   };
-
 
   // speeds up the interval
   this.faster = function(increase) {
@@ -245,5 +217,4 @@ function D3MusicEqualizer() {
     clearInterval(this._intervalHandle);
     this.container.remove();
   };
-
 }

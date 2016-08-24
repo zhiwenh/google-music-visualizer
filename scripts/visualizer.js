@@ -1,4 +1,4 @@
-function D3MusicEqualizer() {
+function AudioVisualizer() {
   this.container = null;
   // add options for these later changing svgheight effects the position styling as well
   this.containerHeight = 2500;
@@ -109,15 +109,15 @@ function D3MusicEqualizer() {
         })
         .attr('fill', (d) => {
           if (this.color === 'purple') {
-            return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100) + "%," + (50 + d / 255 * 15) + "%)";
+            return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100 - d / 255 * 10) + "%," + (50 + d / 255 * 15) + "%)";
           } else if (this.color === 'blue') {
             return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
           } else if (this.color === 'green') {
-            return "hsl(" + (130 - d / 255 * 15 - d / 255 * 85) + "," + (100) + "%," + (40 + d / 255 * 30) + "%)";
+            return "hsl(" + (145 - d / 255 * 135) + "," + (85 + d / 255 * 15) + "%," + (35 + d / 255 * 60) + "%)";
           } else if (this.color === 'red') {
-            return "hsl(" + (-15 + d / 255 * 15 + d / 255 * 65) + "," + (100) + "%," + (40 + d / 255 * 30) + "%)";
+            return "hsl(" + (-15 + d / 255 * 15 + d / 255 * 70) + "," + (93 + d / 255 * 7) + "%," + (30 + d / 255 * 50) + "%)";
           } else if (this.color === 'orange') {
-            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
+            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%," + (50 + d / 255 * 15) + "%)";
           } else if (this.color === 'gray') {
             return "hsl(" + 180 + "," + (3) + "%," + (97 - d / 255 * 95) + "%)";
           } else {

@@ -23,7 +23,7 @@
       "js": ["scripts/libraries/jquery-3.0.0.min.js",
         "scripts/libraries/jquery-ui.min.js",
         "scripts/libraries/d3.min.js",
-        "scripts/d3-music-equalizer.js",
+        "scripts/visualizer.js",
         "scripts/content.js"
       ]
     }

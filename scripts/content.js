@@ -1,31 +1,31 @@
-// imports D3MusicEqualizer from d3-music-equalizer
+// imports AudioVisualizer from visualizer.js
 // imports d3
 // imports jquery
 
 window.onload = function() {
-  // EQUALIZER INITIALIZATION AND RENDER START
+  // VISUALIZER INITIALIZATION AND RENDER START
   var audioElement = $('audio')[0];
   console.log(audioElement);
-  var equalizer = new D3MusicEqualizer();
-  equalizer.create(audioElement, '#player');
+  var visualizer = new AudioVisualizer();
+  visualizer.create(audioElement, '#player');
 
-  // refer to d3-music-equalizer for options meaning
-  equalizer.analyserOptions({
+  // refer to visualizer for options meaning
+  visualizer.analyserOptions({
     fftSize: 2048,
     minDecibels: -87,
     maxDecibels: -3,
     smoothingTimeConstant: 0.83
   });
 
-  equalizer.containerStyles({
+  visualizer.containerStyles({
     position: 'absolute',
-    top: equalizer.containerHeight * -1,
+    top: visualizer.containerHeight * -1,
     left: 0,
     'z-index': 10000,
     'pointer-events': 'none'
   });
 
-  equalizer.options({
+  visualizer.options({
     color: 'orange',
     opacity: 0.7,
     interval: 30,
@@ -33,8 +33,8 @@ window.onload = function() {
     barPadding: 1.7
   });
 
-  equalizer.initialize();
-  equalizer.start();
+  visualizer.initialize();
+  visualizer.start();
 
 
   /* ################################### */
@@ -71,10 +71,10 @@ window.onload = function() {
     cursor: 'pointer',
   };
   // NAME
-  var equalizerName = $('<div>visualization</div>');
-  equalizerName.appendTo(buttonContainer);
-  equalizerName.css(cssDefaults);
-  equalizerName.css({
+  var visualizerName = $('<div>visualization</div>');
+  visualizerName.appendTo(buttonContainer);
+  visualizerName.css(cssDefaults);
+  visualizerName.css({
     paddingLeft: '5px',
     paddingTop: '2px',
     paddingRight: '3px',
@@ -112,7 +112,7 @@ window.onload = function() {
     });
     speedButtons.push(speedButton);
   }
-  speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()) + ' Hz');
+  speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
   speedButtons[1].css({
     cursor: 'default',
     backgroundColor: 'white',
@@ -143,7 +143,7 @@ window.onload = function() {
     });
     heightButtons.push(heightButton);
   }
-  heightButtons[1].text(equalizer.getBarHeightScale() + 'x');
+  heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
   heightButtons[1].css({
     cursor: 'default',
     backgroundColor: 'white',
@@ -153,7 +153,7 @@ window.onload = function() {
     marginRight: '22px'
   });
 
-  // OFF EQUALIZER BUTTON
+  // OFF visualizer BUTTON
   var off = $('<div>off</div>');
   off.appendTo(buttonContainer);
   off.css(cssDefaults);
@@ -167,11 +167,11 @@ window.onload = function() {
 
 
 
-  // array of all the colors in D3MusicEqualizer. iterate thru this with each
+  // array of all the colors in AudioVisualizer. iterate thru this with each
   // click to display a different color
   var colorsIndex = 0;
   var colorsArr = [
-    ['green', '#5AE535'],
+    ['green', '#4FD55A'],
     ['blue', '#5CD1F8'],
     ['purple', '#FB628E'],
     ['red', '#D60401'],
@@ -181,8 +181,8 @@ window.onload = function() {
 
   // toggles the different color themes
   function colorToggle() {
-    // change color of equalizer
-    equalizer.setColor(colorsArr[colorsIndex][0]);
+    // change color of visualizer
+    visualizer.setColor(colorsArr[colorsIndex][0]);
     // change text color of the display container and background color
     buttonContainer.css({
       color: colorsArr[colorsIndex][1],
@@ -213,38 +213,38 @@ window.onload = function() {
   }
 
   colorChange.on('click', colorToggle);
-  equalizerName.on('click', colorToggle);
+  visualizerName.on('click', colorToggle);
 
   // slow down
   speedButtons[0].on('click', function() {
-    if (equalizer.getInterval() < 100) {
-      equalizer.slower(5);
-      speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()) + ' Hz');
+    if (visualizer.getInterval() < 100) {
+      visualizer.slower(5);
+      speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
     }
   });
   // speed up
   speedButtons[2].on('click', function() {
-    if (equalizer.getInterval() > 5) {
-      equalizer.faster(5);
-      speedButtons[1].text(Math.floor(1000 / equalizer.getInterval()) + ' Hz');
+    if (visualizer.getInterval() > 5) {
+      visualizer.faster(5);
+      speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
     }
   });
 
   // height decrease
   heightButtons[0].on('click', function() {
-    var barHeightScale = equalizer.getBarHeightScale();
+    var barHeightScale = visualizer.getBarHeightScale();
     if (barHeightScale > 0.1) {
       barHeightScale -= 0.1;
-      equalizer.setBarHeightScale(barHeightScale);
+      visualizer.setBarHeightScale(barHeightScale);
       heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
     }
   });
   // height increase
   heightButtons[2].on('click', function() {
-    var barHeightScale = equalizer.getBarHeightScale();
+    var barHeightScale = visualizer.getBarHeightScale();
     if (barHeightScale < 2) {
       barHeightScale += 0.1;
-      equalizer.setBarHeightScale(barHeightScale);
+      visualizer.setBarHeightScale(barHeightScale);
       heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
     }
   });
@@ -254,11 +254,11 @@ window.onload = function() {
   off.on('click', function() {
     if (isOn === false) {
       isOn = true;
-      equalizer.stop();
+      visualizer.stop();
       off.text('on');
     } else {
       isOn = false;
-      equalizer.start();
+      visualizer.start();
       off.text('off');
     }
   });

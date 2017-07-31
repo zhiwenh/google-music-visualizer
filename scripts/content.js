@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-
+  console.log('Google Music Equalizer v 2.1.0 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -14,9 +14,10 @@ window.onload = function() {
     function findAudio() {
       var $audio = $('audio');
 
-      if ($audio.length >= 4) {
+      if ($audio.length > 1) {
         clearInterval(findAudioInterval);
-        var audioElement = $audio[$audio.length - 3];
+        $audio = $audio.filter('[src ^= "blob"]');
+        var audioElement = $audio[0];
         startUp(audioElement);
       }
     }

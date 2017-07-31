@@ -51,7 +51,6 @@ function AudioVisualizer() {
 
   // generate web audio api and creates svg container for equalizer
   this.create = function(audioElement, parent) {
-    console.log('created visualizer');
     // web audio related
     this._context = new AudioContext();
     this._element = audioElement;
@@ -72,7 +71,6 @@ function AudioVisualizer() {
   // creates all the equalizer elements to be manipulated and sets up audio connects and
   // freq data array
   this.initialize = function() {
-    console.log('initialized visualizer');
     this.isInitalized = true;
 
     this._source.connect(this.analyser);
@@ -91,7 +89,6 @@ function AudioVisualizer() {
   };
 
   this.render = function() {
-    console.log('rendering');
     this.isPlaying = true;
 
     function render() {

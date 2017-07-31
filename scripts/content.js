@@ -14,9 +14,9 @@ window.onload = function() {
     function findAudio() {
       var $audio = $('audio');
 
-      if ($audio.length >= 1) {
+      if ($audio.length >= 4) {
         clearInterval(findAudioInterval);
-        var audioElement = $audio[$audio.length - 1];
+        var audioElement = $audio[$audio.length - 3];
         startUp(audioElement);
       }
     }
@@ -319,7 +319,5 @@ window.onload = function() {
       }
     })
   }
-
-
 
 };

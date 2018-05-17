@@ -21,7 +21,7 @@ window.onload = function() {
         startUp(audioElement);
       }
     }
-  }, 1000)
+  }, 1000);
 
   /** Called after audio element is found */
   function startUp(audioElement) {
@@ -94,7 +94,7 @@ window.onload = function() {
     /* ################################### */
     // NAME
     /* ################################### */
-    var visualizerName = $('<div>visualization</div>');
+    var visualizerName = $('<div>visualizer color</div>');
     visualizerName.appendTo(buttonContainer);
     visualizerName.css(cssDefaults);
     visualizerName.css({
@@ -117,84 +117,84 @@ window.onload = function() {
     });
 
     /* ################################### */
-    // SPEED BUTTONS
+    // SPEED BUTTONS REMOVED
     /* ################################### */
-    var speedButtons = [];
-    for (var i = 0; i < 3; i++) {
-      var speedButton;
-      if (i === 0) {
-        speedButton = $('<div>-</div>');
-      } else if (i === 2) {
-        speedButton = $('<div>+</div>');
-      } else {
-        speedButton = $('<div></div>');
-      }
-      speedButton.appendTo(buttonContainer);
-      speedButton.css(cssDefaults);
-      speedButton.css({
-        width: '30px',
-        paddingTop: '3px',
-        borderRight: '1px solid #d3d3d3',
-        borderLeft: '1px solid #d3d3d3'
-      });
-      speedButtons.push(speedButton);
-    }
-    speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-    speedButtons[1].css({
-      cursor: 'default',
-      backgroundColor: 'white',
-      width: '47px'
-    });
-    speedButtons[2].css({
-      marginRight: '22px'
-    });
+    // var speedButtons = [];
+    // for (var i = 0; i < 3; i++) {
+    //   var speedButton;
+    //   if (i === 0) {
+    //     speedButton = $('<div>-</div>');
+    //   } else if (i === 2) {
+    //     speedButton = $('<div>+</div>');
+    //   } else {
+    //     speedButton = $('<div></div>');
+    //   }
+    //   speedButton.appendTo(buttonContainer);
+    //   speedButton.css(cssDefaults);
+    //   speedButton.css({
+    //     width: '30px',
+    //     paddingTop: '3px',
+    //     borderRight: '1px solid #d3d3d3',
+    //     borderLeft: '1px solid #d3d3d3'
+    //   });
+    //   speedButtons.push(speedButton);
+    // }
+    // speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+    // speedButtons[1].css({
+    //   cursor: 'default',
+    //   backgroundColor: 'white',
+    //   width: '47px'
+    // });
+    // speedButtons[2].css({
+    //   marginRight: '22px'
+    // });
 
     /* ################################### */
-    // HEIGHT BUTTONS
+    // HEIGHT BUTTONS REMOVED
     /* ################################### */
-    var heightButtons = [];
-    for (i = 0; i < 3; i++) {
-      var heightButton;
-      if (i === 0) {
-        heightButton = $('<div>-</div>');
-      } else if (i === 2) {
-        heightButton = $('<div>+</div>');
-      } else {
-        heightButton = $('<div></div>');
-      }
-      heightButton.appendTo(buttonContainer);
-      heightButton.css(cssDefaults);
-      heightButton.css({
-        width: '30px',
-        paddingTop: '3px',
-        borderRight: '1px solid #d3d3d3',
-        borderLeft: '1px solid #d3d3d3'
-      });
-      heightButtons.push(heightButton);
-    }
-    heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
-    heightButtons[1].css({
-      cursor: 'default',
-      backgroundColor: 'white',
-      width: '35px'
-    });
-    heightButtons[2].css({
-      marginRight: '22px'
-    });
+    // var heightButtons = [];
+    // for (i = 0; i < 3; i++) {
+    //   var heightButton;
+    //   if (i === 0) {
+    //     heightButton = $('<div>-</div>');
+    //   } else if (i === 2) {
+    //     heightButton = $('<div>+</div>');
+    //   } else {
+    //     heightButton = $('<div></div>');
+    //   }
+    //   heightButton.appendTo(buttonContainer);
+    //   heightButton.css(cssDefaults);
+    //   heightButton.css({
+    //     width: '30px',
+    //     paddingTop: '3px',
+    //     borderRight: '1px solid #d3d3d3',
+    //     borderLeft: '1px solid #d3d3d3'
+    //   });
+    //   heightButtons.push(heightButton);
+    // }
+    // heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
+    // heightButtons[1].css({
+    //   cursor: 'default',
+    //   backgroundColor: 'white',
+    //   width: '35px'
+    // });
+    // heightButtons[2].css({
+    //   marginRight: '22px'
+    // });
 
     /* ################################### */
     // MODE visualizer BUTTON
     /* ################################### */
-    var mode = $('<div>mode</div>');
-    mode.appendTo(buttonContainer);
-    mode.css(cssDefaults);
-    mode.css({
-      width: '50px',
-      paddingTop: '2px',
-      paddingLeft: '5px',
-      paddingRight: '5px',
-      borderLeft: '1px solid #d3d3d3',
-    });
+    // var mode = $('<div>mode</div>');
+    // mode.appendTo(buttonContainer);
+    // mode.css(cssDefaults);
+    // mode.css({
+    //   width: '50px',
+    //   paddingTop: '2px',
+    //   paddingLeft: '5px',
+    //   paddingRight: '5px',
+    //   borderLeft: '1px solid #d3d3d3',
+    // });
 
     /* ################################### */
     // OFF visualizer BUTTON
@@ -233,6 +233,8 @@ window.onload = function() {
         color: colorsArr[colorsIndex][1],
         backgroundColor: colorsArr[colorsIndex][1]
       });
+
+      // Color changes for website. DISABLED to improve looks
       // change color of google music progress bar
       $('#primaryProgress').css({
         background: colorsArr[colorsIndex][1]
@@ -246,9 +248,11 @@ window.onload = function() {
         color: colorsArr[colorsIndex][1]
       });
       // change color of top toolbar
-      $('#material-app-bar').css({
-        background: colorsArr[colorsIndex][1]
-      });
+      // $('#material-app-bar').css({
+      //   background: colorsArr[colorsIndex][1]
+      // });
+
+
       colorChange.text(colorsArr[colorsIndex][0]);
       if (colorsIndex === colorsArr.length - 1) {
         colorsIndex = 0;
@@ -260,39 +264,42 @@ window.onload = function() {
     colorChange.on('click', colorToggle);
     visualizerName.on('click', colorToggle);
 
-    // slow down
-    speedButtons[0].on('click', function() {
-      if (visualizer.getInterval() < 100) {
-        visualizer.slower(5);
-        speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-      }
-    });
-    // speed up
-    speedButtons[2].on('click', function() {
-      if (visualizer.getInterval() > 5) {
-        visualizer.faster(5);
-        speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-      }
-    });
+    // REMOVED BUTTONS FOR SLOW AND SPEED UP
+    // // slow down
+    // speedButtons[0].on('click', function() {
+    //   if (visualizer.getInterval() < 100) {
+    //     visualizer.slower(5);
+    //     speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+    //   }
+    // });
+    // // speed up
+    // speedButtons[2].on('click', function() {
+    //   if (visualizer.getInterval() > 5) {
+    //     visualizer.faster(5);
+    //     speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+    //   }
+    // });
 
-    // height decrease
-    heightButtons[0].on('click', function() {
-      var barHeightScale = visualizer.getBarHeightScale();
-      if (barHeightScale > 0.1) {
-        barHeightScale -= 0.1;
-        visualizer.setBarHeightScale(barHeightScale);
-        heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
-      }
-    });
-    // height increase
-    heightButtons[2].on('click', function() {
-      var barHeightScale = visualizer.getBarHeightScale();
-      if (barHeightScale < 2) {
-        barHeightScale += 0.1;
-        visualizer.setBarHeightScale(barHeightScale);
-        heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
-      }
-    });
+    // REMOVED BUTTONS FOR HEIGHT INCREASE
+    // // height decrease
+    // heightButtons[0].on('click', function() {
+    //   var barHeightScale = visualizer.getBarHeightScale();
+    //   if (barHeightScale > 0.1) {
+    //     barHeightScale -= 0.1;
+    //     visualizer.setBarHeightScale(barHeightScale);
+    //     heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
+    //   }
+    // });
+    // // height increase
+    // heightButtons[2].on('click', function() {
+    //   var barHeightScale = visualizer.getBarHeightScale();
+    //   if (barHeightScale < 2) {
+    //     barHeightScale += 0.1;
+    //     visualizer.setBarHeightScale(barHeightScale);
+    //     heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
+    //   }
+    // });
+
 
     // ON/OFF
     var isOn = false;
@@ -308,17 +315,17 @@ window.onload = function() {
       }
     });
 
-    var whatMode = 'player';
-    mode.on('click', function() {
-      $mainContainer = $('#mainContainer');
-      if (whatMode === 'player') {
-        $mainContainer.hide('fast');
-        whatMode = 'audio';
-      } else {
-        $mainContainer.show('fast');
-        whatMode = 'player';
-      }
-    })
+    // var whatMode = 'player';
+    // mode.on('click', function() {
+    //   $mainContainer = $('#mainContainer');
+    //   if (whatMode === 'player') {
+    //     $mainContainer.hide('fast');
+    //     whatMode = 'audio';
+    //   } else {
+    //     $mainContainer.show('fast');
+    //     whatMode = 'player';
+    //   }
+    // });
   }
 
 };

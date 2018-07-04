@@ -117,84 +117,84 @@ window.onload = function() {
     });
 
     /* ################################### */
-    // SPEED BUTTONS REMOVED
+    // SPEED BUTTONS
     /* ################################### */
-    // var speedButtons = [];
-    // for (var i = 0; i < 3; i++) {
-    //   var speedButton;
-    //   if (i === 0) {
-    //     speedButton = $('<div>-</div>');
-    //   } else if (i === 2) {
-    //     speedButton = $('<div>+</div>');
-    //   } else {
-    //     speedButton = $('<div></div>');
-    //   }
-    //   speedButton.appendTo(buttonContainer);
-    //   speedButton.css(cssDefaults);
-    //   speedButton.css({
-    //     width: '30px',
-    //     paddingTop: '3px',
-    //     borderRight: '1px solid #d3d3d3',
-    //     borderLeft: '1px solid #d3d3d3'
-    //   });
-    //   speedButtons.push(speedButton);
-    // }
-    // speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-    // speedButtons[1].css({
-    //   cursor: 'default',
-    //   backgroundColor: 'white',
-    //   width: '47px'
-    // });
-    // speedButtons[2].css({
-    //   marginRight: '22px'
-    // });
+    var speedButtons = [];
+    for (var i = 0; i < 3; i++) {
+      var speedButton;
+      if (i === 0) {
+        speedButton = $('<div>-</div>');
+      } else if (i === 2) {
+        speedButton = $('<div>+</div>');
+      } else {
+        speedButton = $('<div></div>');
+      }
+      speedButton.appendTo(buttonContainer);
+      speedButton.css(cssDefaults);
+      speedButton.css({
+        width: '30px',
+        paddingTop: '3px',
+        borderRight: '1px solid #d3d3d3',
+        borderLeft: '1px solid #d3d3d3'
+      });
+      speedButtons.push(speedButton);
+    }
+    speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+    speedButtons[1].css({
+      cursor: 'default',
+      backgroundColor: 'white',
+      width: '47px'
+    });
+    speedButtons[2].css({
+      marginRight: '22px'
+    });
 
     /* ################################### */
-    // HEIGHT BUTTONS REMOVED
+    // HEIGHT BUTTONS
     /* ################################### */
-    // var heightButtons = [];
-    // for (i = 0; i < 3; i++) {
-    //   var heightButton;
-    //   if (i === 0) {
-    //     heightButton = $('<div>-</div>');
-    //   } else if (i === 2) {
-    //     heightButton = $('<div>+</div>');
-    //   } else {
-    //     heightButton = $('<div></div>');
-    //   }
-    //   heightButton.appendTo(buttonContainer);
-    //   heightButton.css(cssDefaults);
-    //   heightButton.css({
-    //     width: '30px',
-    //     paddingTop: '3px',
-    //     borderRight: '1px solid #d3d3d3',
-    //     borderLeft: '1px solid #d3d3d3'
-    //   });
-    //   heightButtons.push(heightButton);
-    // }
-    // heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
-    // heightButtons[1].css({
-    //   cursor: 'default',
-    //   backgroundColor: 'white',
-    //   width: '35px'
-    // });
-    // heightButtons[2].css({
-    //   marginRight: '22px'
-    // });
+    var heightButtons = [];
+    for (i = 0; i < 3; i++) {
+      var heightButton;
+      if (i === 0) {
+        heightButton = $('<div>-</div>');
+      } else if (i === 2) {
+        heightButton = $('<div>+</div>');
+      } else {
+        heightButton = $('<div></div>');
+      }
+      heightButton.appendTo(buttonContainer);
+      heightButton.css(cssDefaults);
+      heightButton.css({
+        width: '30px',
+        paddingTop: '3px',
+        borderRight: '1px solid #d3d3d3',
+        borderLeft: '1px solid #d3d3d3'
+      });
+      heightButtons.push(heightButton);
+    }
+    heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
+    heightButtons[1].css({
+      cursor: 'default',
+      backgroundColor: 'white',
+      width: '35px'
+    });
+    heightButtons[2].css({
+      marginRight: '22px'
+    });
 
     /* ################################### */
     // MODE visualizer BUTTON
     /* ################################### */
-    // var mode = $('<div>mode</div>');
-    // mode.appendTo(buttonContainer);
-    // mode.css(cssDefaults);
-    // mode.css({
-    //   width: '50px',
-    //   paddingTop: '2px',
-    //   paddingLeft: '5px',
-    //   paddingRight: '5px',
-    //   borderLeft: '1px solid #d3d3d3',
-    // });
+    var mode = $('<div>mode</div>');
+    mode.appendTo(buttonContainer);
+    mode.css(cssDefaults);
+    mode.css({
+      width: '50px',
+      paddingTop: '2px',
+      paddingLeft: '5px',
+      paddingRight: '5px',
+      borderLeft: '1px solid #d3d3d3',
+    });
 
     /* ################################### */
     // OFF visualizer BUTTON
@@ -209,8 +209,6 @@ window.onload = function() {
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3',
     });
-
-
 
     // array of all the colors in AudioVisualizer. iterate thru this with each
     // click to display a different color
@@ -264,41 +262,39 @@ window.onload = function() {
     colorChange.on('click', colorToggle);
     visualizerName.on('click', colorToggle);
 
-    // REMOVED BUTTONS FOR SLOW AND SPEED UP
-    // // slow down
-    // speedButtons[0].on('click', function() {
-    //   if (visualizer.getInterval() < 100) {
-    //     visualizer.slower(5);
-    //     speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-    //   }
-    // });
-    // // speed up
-    // speedButtons[2].on('click', function() {
-    //   if (visualizer.getInterval() > 5) {
-    //     visualizer.faster(5);
-    //     speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
-    //   }
-    // });
+    // slow down
+    speedButtons[0].on('click', function() {
+      if (visualizer.getInterval() < 100) {
+        visualizer.slower(5);
+        speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+      }
+    });
+    // speed up
+    speedButtons[2].on('click', function() {
+      if (visualizer.getInterval() > 5) {
+        visualizer.faster(5);
+        speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+      }
+    });
 
-    // REMOVED BUTTONS FOR HEIGHT INCREASE
-    // // height decrease
-    // heightButtons[0].on('click', function() {
-    //   var barHeightScale = visualizer.getBarHeightScale();
-    //   if (barHeightScale > 0.1) {
-    //     barHeightScale -= 0.1;
-    //     visualizer.setBarHeightScale(barHeightScale);
-    //     heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
-    //   }
-    // });
-    // // height increase
-    // heightButtons[2].on('click', function() {
-    //   var barHeightScale = visualizer.getBarHeightScale();
-    //   if (barHeightScale < 2) {
-    //     barHeightScale += 0.1;
-    //     visualizer.setBarHeightScale(barHeightScale);
-    //     heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
-    //   }
-    // });
+    // height decrease
+    heightButtons[0].on('click', function() {
+      var barHeightScale = visualizer.getBarHeightScale();
+      if (barHeightScale > 0.1) {
+        barHeightScale -= 0.1;
+        visualizer.setBarHeightScale(barHeightScale);
+        heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
+      }
+    });
+    // height increase
+    heightButtons[2].on('click', function() {
+      var barHeightScale = visualizer.getBarHeightScale();
+      if (barHeightScale < 2) {
+        barHeightScale += 0.1;
+        visualizer.setBarHeightScale(barHeightScale);
+        heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
+      }
+    });
 
 
     // ON/OFF
@@ -315,17 +311,17 @@ window.onload = function() {
       }
     });
 
-    // var whatMode = 'player';
-    // mode.on('click', function() {
-    //   $mainContainer = $('#mainContainer');
-    //   if (whatMode === 'player') {
-    //     $mainContainer.hide('fast');
-    //     whatMode = 'audio';
-    //   } else {
-    //     $mainContainer.show('fast');
-    //     whatMode = 'player';
-    //   }
-    // });
+    var whatMode = 'player';
+    mode.on('click', function() {
+      $mainContainer = $('#mainContainer');
+      if (whatMode === 'player') {
+        $mainContainer.hide('fast');
+        whatMode = 'audio';
+      } else {
+        $mainContainer.show('fast');
+        whatMode = 'player';
+      }
+    });
   }
 
 };

@@ -1,7 +1,7 @@
 {
   "name": "audio-equalizer-chrome",
   "version": "1.0.0",
-  "description": "Chrome extension that displays an audio visualizer/equalizer on Google Music. Link: https://chrome.google.com/webstore/detail/google-music-equalizer/aggkolaaidiocgnfhponnmdmhkamogmb",
+  "description": "Chrome extension that displays an audio visualizer on Google Music. Link: https://chrome.google.com/webstore/detail/google-music-equalizer/aggkolaaidiocgnfhponnmdmhkamogmb",
   "main": "gulp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

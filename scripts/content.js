@@ -78,12 +78,12 @@ window.onload = function() {
       top: '67px',
       left: '100px',
       zIndex: 10000,
-      border: '1px solid #d3d3d3',
+      // border: '1px solid #d3d3d3',
       outline: 'none',
       textAlign: 'center',
       boxSizing: 'border-box',
       color: '#FB7B62', // initial color of display words. changes with colorArr
-      backgroundColor: '#FB7B62',
+      // backgroundColor: '#FB7B62',
       fontFamily: 'Roboto, arial',
       fontSize: '13px',
       userSelect: 'none', // no text highlighting
@@ -110,20 +110,35 @@ window.onload = function() {
       paddingTop: '2px',
       paddingRight: '3px',
       width: '130px',
-      marginRight: '22px',
-      cursor: 'default'
+      border: '1px solid #d3d3d3'
     });
+
+    /* ################################### */
+    // CONTAINER FOR OPTIONS
+    /* ################################### */
+    var optionsContainer = $('<div></div>');
+    optionsContainer.appendTo(buttonContainer);
+    optionsContainer.css(cssDefaults);
+    optionsContainer.css({
+      display: 'flex',
+      flexFlow: 'row',
+      backgroundColor: '#FB7B62',
+      border: '1px solid #d3d3d3',
+      borderLeft: '0px'
+    });
+
 
     /* ################################### */
     // COLOR CHANGE BUTTON
     /* ################################### */
     var colorChange = $('<div>theme orange</div>');
-    colorChange.appendTo(buttonContainer);
+    colorChange.appendTo(optionsContainer);
     colorChange.css(cssDefaults);
     colorChange.css({
       width: '100px',
       paddingTop: '2px',
       marginRight: '22px',
+      marginLeft: '22px',
       borderRight: '1px solid #d3d3d3'
     });
 
@@ -140,7 +155,7 @@ window.onload = function() {
       } else {
         speedButton = $('<div></div>');
       }
-      speedButton.appendTo(buttonContainer);
+      speedButton.appendTo(optionsContainer);
       speedButton.css(cssDefaults);
       speedButton.css({
         width: '30px',
@@ -173,7 +188,7 @@ window.onload = function() {
       } else {
         heightButton = $('<div></div>');
       }
-      heightButton.appendTo(buttonContainer);
+      heightButton.appendTo(optionsContainer);
       heightButton.css(cssDefaults);
       heightButton.css({
         width: '30px',
@@ -206,7 +221,7 @@ window.onload = function() {
       } else {
         barWidthButton = $('<div></div>');
       }
-      barWidthButton.appendTo(buttonContainer);
+      barWidthButton.appendTo(optionsContainer);
       barWidthButton.css(cssDefaults);
       barWidthButton.css({
         width: '30px',
@@ -230,7 +245,7 @@ window.onload = function() {
     // MODE visualizer BUTTON
     /* ################################### */
     var mode = $('<div>mode</div>');
-    mode.appendTo(buttonContainer);
+    mode.appendTo(optionsContainer);
     mode.css(cssDefaults);
     mode.css({
       width: '50px',
@@ -245,15 +260,30 @@ window.onload = function() {
     // OFF visualizer BUTTON
     /* ################################### */
     var off = $('<div>off</div>');
-    off.appendTo(buttonContainer);
+    off.appendTo(optionsContainer);
     off.css(cssDefaults);
     off.css({
       width: '35px',
       paddingTop: '2px',
       paddingLeft: '5px',
       paddingRight: '5px',
-      borderLeft: '1px solid #d3d3d3',
+      borderLeft: '1px solid #d3d3d3'
     });
+
+    // Options show and hide
+    var optionsHidden = true;
+    function optionsToggle() {
+      if (optionsHidden === false) {
+        $(optionsContainer).hide('slide', {direction: 'left'}, 600);
+        optionsHidden = true;
+      } else {
+        $(optionsContainer).show('slide', {direction: 'left'}, 600);
+        optionsHidden = false;
+      }
+    }
+
+    $(optionsContainer).hide();
+    visualizerName.on('click', optionsToggle)
 
     // array of all the colors in AudioVisualizer. iterate thru this with each
     // click to display a different color
@@ -269,7 +299,6 @@ window.onload = function() {
 
     // toggles the different color themes
     function colorToggle() {
-
       if (colorsIndex === colorsArr.length - 1) {
         colorsIndex = 0;
       } else {
@@ -281,6 +310,10 @@ window.onload = function() {
       visualizer.setColor(colorsArr[colorsIndex][0]);
       // change text color of the display container and background color
       buttonContainer.css({
+        color: colorsArr[colorsIndex][1],
+      });
+
+      optionsContainer.css({
         color: colorsArr[colorsIndex][1],
         backgroundColor: colorsArr[colorsIndex][1]
       });
@@ -315,6 +348,7 @@ window.onload = function() {
         speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
       }
     });
+
     // speed up
     speedButtons[2].on('click', function() {
       if (visualizer.getInterval() > 5) {
@@ -332,6 +366,7 @@ window.onload = function() {
         heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
       }
     });
+
     // height increase
     heightButtons[2].on('click', function() {
       var barHeightScale = visualizer.getBarHeightScale();

@@ -17,52 +17,58 @@ window.onload = function() {
       if ($audio.length > 1) {
         clearInterval(findAudioInterval);
         $audio = $audio.filter('[src ^= "blob"]');
-        var audioElement = $audio[0];
-        startUp(audioElement);
+        startUp($audio);
       }
     }
   }, 1000);
 
   /** Called after audio element is found */
-  function startUp(audioElement) {
-    // VISUALIZER INITIALIZATION AND RENDER START
-    var visualizer = new AudioVisualizer();
+  function startUp(audioElements) {
+    var visualizers = [];
 
-    visualizer.options({
-      color: 'orange',
-      opacity: 0.7,
-      interval: 30,
-      frequencyDataDivide: 9,
-      barPadding: 1.7,
-      barWidth: 25,
-      containerWidth: $(window).width()
-    });
+    for (var i = 0; i < audioElements.length; i++) {
+      // VISUALIZER INITIALIZATION AND RENDER START
+      var visualizer = new AudioVisualizer();
 
-    visualizer.create(audioElement, '#player');
+      visualizer.options({
+        color: 'orange',
+        opacity: 0.7,
+        interval: 30,
+        frequencyDataDivide: 9,
+        barPadding: 1.7,
+        barWidth: 25,
+        containerWidth: $(window).width()
+      });
 
-    // refer to visualizer for options meaning
-    visualizer.analyserOptions({
-      fftSize: 2048,
-      minDecibels: -87,
-      maxDecibels: -3,
-      smoothingTimeConstant: 0.83
-    });
+      visualizer.create(audioElements[i], '#player');
 
-    visualizer.containerStyles({
-      position: 'absolute',
-      top: visualizer.containerHeight * -1,
-      left: 0,
-      'z-index': 10000,
-      'pointer-events': 'none'
-    });
+      // refer to visualizer for options meaning
+      visualizer.analyserOptions({
+        fftSize: 2048,
+        minDecibels: -87,
+        maxDecibels: -3,
+        smoothingTimeConstant: 0.83
+      });
 
-    visualizer.initialize();
-    visualizer.start();
+      visualizer.containerStyles({
+        position: 'absolute',
+        top: visualizer.containerHeight * -1,
+        left: 0,
+        'z-index': 10000,
+        'pointer-events': 'none'
+      });
 
-    $(window).resize(function() {
-      console.log($(window).width());
-      visualizer.setContainerWidth($(window).width())
-    });
+      visualizer.initialize();
+      visualizer.start();
+
+      $(window).resize(function() {
+        console.log($(window).width());
+        visualizer.setContainerWidth($(window).width())
+      });
+
+      visualizers.push(visualizer);
+    }
+
 
     /* ################################### */
     // GOOGLE MUSIC BUTTON DISPLAY
@@ -165,7 +171,7 @@ window.onload = function() {
       });
       speedButtons.push(speedButton);
     }
-    speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+    speedButtons[1].text(Math.floor(1000 / visualizers[0].getInterval()) + ' Hz');
     speedButtons[1].css({
       cursor: 'default',
       backgroundColor: 'white',
@@ -198,7 +204,7 @@ window.onload = function() {
       });
       heightButtons.push(heightButton);
     }
-    heightButtons[1].text(visualizer.getBarHeightScale() + 'x');
+    heightButtons[1].text(visualizers[0].getBarHeightScale() + 'x');
     heightButtons[1].css({
       cursor: 'default',
       backgroundColor: 'white',
@@ -231,7 +237,7 @@ window.onload = function() {
       });
       barWidthButtons.push(barWidthButton);
     }
-    barWidthButtons[1].text(visualizer.getBarWidth() + 'px');
+    barWidthButtons[1].text(visualizers[0].getBarWidth() + 'px');
     barWidthButtons[1].css({
       cursor: 'default',
       backgroundColor: 'white',
@@ -307,7 +313,10 @@ window.onload = function() {
       colorChange.text('theme ' + colorsArr[colorsIndex][0]);
 
       // change color of visualizer
-      visualizer.setColor(colorsArr[colorsIndex][0]);
+      visualizers.forEach(visualizer => {
+        visualizer.setColor(colorsArr[colorsIndex][0]);
+      });
+
       // change text color of the display container and background color
       buttonContainer.css({
         color: colorsArr[colorsIndex][1],
@@ -352,7 +361,9 @@ window.onload = function() {
     // slow down
     speedButtons[0].on('click', function() {
       if (visualizer.getInterval() < 100) {
-        visualizer.slower(5);
+        visualizers.forEach(visualizer => {
+          visualizer.slower(5);
+        });
         speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
       }
     });
@@ -360,7 +371,9 @@ window.onload = function() {
     // speed up
     speedButtons[2].on('click', function() {
       if (visualizer.getInterval() > 5) {
-        visualizer.faster(5);
+        visualizers.forEach(visualizer => {
+          visualizer.faster(5);
+        });
         speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
       }
     });
@@ -370,7 +383,9 @@ window.onload = function() {
       var barHeightScale = visualizer.getBarHeightScale();
       if (barHeightScale > 0.1) {
         barHeightScale -= 0.1;
-        visualizer.setBarHeightScale(barHeightScale);
+        visualizers.forEach(visualizer => {
+          visualizer.setBarHeightScale(barHeightScale);
+        });
         heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
       }
     });
@@ -380,7 +395,9 @@ window.onload = function() {
       var barHeightScale = visualizer.getBarHeightScale();
       if (barHeightScale < 2) {
         barHeightScale += 0.1;
-        visualizer.setBarHeightScale(barHeightScale);
+        visualizers.forEach(visualizer => {
+          visualizer.setBarHeightScale(barHeightScale);
+        });
         heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
       }
     });
@@ -390,7 +407,9 @@ window.onload = function() {
       var barWidth = visualizer.getBarWidth();
       if (barWidth > 15) {
         barWidth -= 1;
-        visualizer.setBarWidth(barWidth);
+        visualizers.forEach(visualizer => {
+          visualizer.setBarWidth(barWidth);
+        });
         barWidthButtons[1].text(barWidth + 'px');
       }
     });
@@ -400,7 +419,9 @@ window.onload = function() {
       var barWidth = visualizer.getBarWidth();
       if (barWidth < 50) {
         barWidth += 1;
-        visualizer.setBarWidth(barWidth);
+        visualizers.forEach(visualizer => {
+          visualizer.setBarWidth(barWidth);
+        });
         barWidthButtons[1].text(barWidth + 'px');
       }
     });
@@ -410,11 +431,15 @@ window.onload = function() {
     off.on('click', function() {
       if (isOn === false) {
         isOn = true;
-        visualizer.stop();
+        visualizers.forEach(visualizer => {
+          visualizer.stop();
+        });
         off.text('on');
       } else {
         isOn = false;
-        visualizer.start();
+        visualizers.forEach(visualizer => {
+          visualizer.start();
+        });
         off.text('off');
       }
     });

@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Equalizer v 2.1.0 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v 1.2.1 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -27,6 +27,17 @@ window.onload = function() {
   function startUp(audioElement) {
     // VISUALIZER INITIALIZATION AND RENDER START
     var visualizer = new AudioVisualizer();
+
+    visualizer.options({
+      color: 'orange',
+      opacity: 0.7,
+      interval: 30,
+      frequencyDataDivide: 9,
+      barPadding: 1.7,
+      barWidth: 25,
+      containerWidth: $(window).width()
+    });
+
     visualizer.create(audioElement, '#player');
 
     // refer to visualizer for options meaning
@@ -45,16 +56,13 @@ window.onload = function() {
       'pointer-events': 'none'
     });
 
-    visualizer.options({
-      color: 'orange',
-      opacity: 0.7,
-      interval: 30,
-      frequencyDataDivide: 9,
-      barPadding: 1.7
-    });
-
     visualizer.initialize();
     visualizer.start();
+
+    $(window).resize(function() {
+      console.log($(window).width());
+      visualizer.setContainerWidth($(window).width())
+    });
 
     /* ################################### */
     // GOOGLE MUSIC BUTTON DISPLAY
@@ -94,26 +102,29 @@ window.onload = function() {
     /* ################################### */
     // NAME
     /* ################################### */
-    var visualizerName = $('<div>visualizer color</div>');
+    var visualizerName = $('<div>visualizer options</div>');
     visualizerName.appendTo(buttonContainer);
     visualizerName.css(cssDefaults);
     visualizerName.css({
       paddingLeft: '5px',
       paddingTop: '2px',
       paddingRight: '3px',
+      width: '130px',
+      marginRight: '22px',
+      cursor: 'default'
     });
 
     /* ################################### */
     // COLOR CHANGE BUTTON
     /* ################################### */
-    var colorChange = $('<div>orange</div>');
+    var colorChange = $('<div>theme orange</div>');
     colorChange.appendTo(buttonContainer);
     colorChange.css(cssDefaults);
     colorChange.css({
-      width: '65px',
+      width: '100px',
       paddingTop: '2px',
       marginRight: '22px',
-      borderRight: '1px solid #d3d3d3',
+      borderRight: '1px solid #d3d3d3'
     });
 
     /* ################################### */
@@ -183,6 +194,39 @@ window.onload = function() {
     });
 
     /* ################################### */
+    // BAR WIDTH BUTTONS
+    /* ################################### */
+    var barWidthButtons = [];
+    for (i = 0; i < 3; i++) {
+      var barWidthButton;
+      if (i === 0) {
+        barWidthButton = $('<div>-</div>');
+      } else if (i === 2) {
+        barWidthButton = $('<div>+</div>');
+      } else {
+        barWidthButton = $('<div></div>');
+      }
+      barWidthButton.appendTo(buttonContainer);
+      barWidthButton.css(cssDefaults);
+      barWidthButton.css({
+        width: '30px',
+        paddingTop: '3px',
+        borderRight: '1px solid #d3d3d3',
+        borderLeft: '1px solid #d3d3d3'
+      });
+      barWidthButtons.push(barWidthButton);
+    }
+    barWidthButtons[1].text(visualizer.getBarWidth() + 'px');
+    barWidthButtons[1].css({
+      cursor: 'default',
+      backgroundColor: 'white',
+      width: '40px'
+    });
+    barWidthButtons[2].css({
+      marginRight: '22px'
+    });
+
+    /* ################################### */
     // MODE visualizer BUTTON
     /* ################################### */
     var mode = $('<div>mode</div>');
@@ -194,6 +238,7 @@ window.onload = function() {
       paddingLeft: '5px',
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3',
+      marginRight: '22px'
     });
 
     /* ################################### */
@@ -214,16 +259,24 @@ window.onload = function() {
     // click to display a different color
     var colorsIndex = 0;
     var colorsArr = [
+      ['orange', '#FF5722'],
       ['green', '#4FD55A'],
       ['blue', '#5CD1F8'],
       ['purple', '#FB628E'],
       ['red', '#D60401'],
       ['gray', '#BDBDBD'],
-      ['orange', '#FF5722']
     ];
 
     // toggles the different color themes
     function colorToggle() {
+
+      if (colorsIndex === colorsArr.length - 1) {
+        colorsIndex = 0;
+      } else {
+        colorsIndex++;
+      }
+      colorChange.text('theme ' + colorsArr[colorsIndex][0]);
+
       // change color of visualizer
       visualizer.setColor(colorsArr[colorsIndex][0]);
       // change text color of the display container and background color
@@ -232,8 +285,6 @@ window.onload = function() {
         backgroundColor: colorsArr[colorsIndex][1]
       });
 
-      // Color changes for website. DISABLED to improve looks
-      // change color of google music progress bar
       $('#primaryProgress').css({
         background: colorsArr[colorsIndex][1]
       });
@@ -245,22 +296,17 @@ window.onload = function() {
       $('#player-bar-play-pause').css({
         color: colorsArr[colorsIndex][1]
       });
-      // change color of top toolbar
-      // $('#material-app-bar').css({
-      //   background: colorsArr[colorsIndex][1]
-      // });
 
+      $('#progressContainer').css({
+        backgroundColor: colorsArr[colorsIndex][1]
+      });
 
-      colorChange.text(colorsArr[colorsIndex][0]);
-      if (colorsIndex === colorsArr.length - 1) {
-        colorsIndex = 0;
-      } else {
-        colorsIndex++;
-      }
+      $('#sliderKnob').css({
+        color: colorsArr[colorsIndex][1]
+      });
     }
 
     colorChange.on('click', colorToggle);
-    visualizerName.on('click', colorToggle);
 
     // slow down
     speedButtons[0].on('click', function() {
@@ -296,6 +342,25 @@ window.onload = function() {
       }
     });
 
+    // bar width decrease
+    barWidthButtons[0].on('click', function() {
+      var barWidth = visualizer.getBarWidth();
+      if (barWidth > 15) {
+        barWidth -= 1;
+        visualizer.setBarWidth(barWidth);
+        barWidthButtons[1].text(barWidth + 'px');
+      }
+    });
+
+    // bar width increase
+    barWidthButtons[2].on('click', function() {
+      var barWidth = visualizer.getBarWidth();
+      if (barWidth < 50) {
+        barWidth += 1;
+        visualizer.setBarWidth(barWidth);
+        barWidthButtons[1].text(barWidth + 'px');
+      }
+    });
 
     // ON/OFF
     var isOn = false;

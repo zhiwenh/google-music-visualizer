@@ -11,6 +11,7 @@ function AudioVisualizer() {
     d = d * this.barHeightScale;
     return (d / 225 * 700 - d);
   };
+  this.barWidth = 25;
 
   this.interval = 20;
   this._intervalHandle = null;
@@ -21,6 +22,8 @@ function AudioVisualizer() {
 
   this.isPlaying = false; // if rendering if on or false
   this.isInitalized = false;
+
+  this._parent = null;
 
   // web audio api variables
   this._context = null; // new AudioContext
@@ -56,6 +59,7 @@ function AudioVisualizer() {
     this._element = audioElement;
     this._source = this._context.createMediaElementSource(this._element);
     this.analyser = this._context.createAnalyser();
+    this._parent = parent;
 
     // d3 equalizer related
     this.container = d3.select(parent).insert('svg').attr('height', this.containerHeight).attr('width', this.containerWidth);
@@ -83,9 +87,9 @@ function AudioVisualizer() {
       .enter()
       .append('rect')
       .attr('x', (d, i) => {
-        return i * (this.containerWidth / this.frequencyData.length);
+        return i * this.barWidth;
       })
-      .attr('width', this.containerWidth / this.frequencyData.length - this.barPadding);
+      .attr('width', this.barWidth - this.barPadding);
   };
 
   this.render = function() {
@@ -214,4 +218,23 @@ function AudioVisualizer() {
     clearInterval(this._intervalHandle);
     this.container.remove();
   };
+
+  this.getBarWidth = function() {
+    return this.barWidth;
+  }
+
+  this.setBarWidth = function(barWidth) {
+    this.barWidth = barWidth;
+    this.container
+      .selectAll('rect')
+      .attr('x', (d, i) => {
+        return i * this.barWidth;
+      })
+      .attr('width', this.barWidth - this.barPadding);
+  }
+
+  this.setContainerWidth = function(containerWidth) {
+    this.containerWidth = containerWidth;
+    this.container.attr('width', containerWidth);
+  }
 }

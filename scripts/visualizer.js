@@ -94,6 +94,8 @@ function AudioVisualizer() {
 
   this.render = function() {
     this.isPlaying = true;
+    var oneMore = false;
+    var oneMore2 = false;
 
     function render() {
       this.analyser.getByteFrequencyData(this.frequencyData); // now frequencyData array has
@@ -105,7 +107,19 @@ function AudioVisualizer() {
           break;
         }
       }
-      if (hasData === true) {
+
+      if (hasData === false) {
+        oneMore2 = true;
+      }
+
+      if (hasData === true || oneMore === true) {
+        if (oneMore2 === true) {
+          oneMore2 = false;
+          oneMore = false;
+        } else {
+          oneMore = true;
+        }
+
         this.container.selectAll('rect')
           .data(this.frequencyData)
           .attr('y', (d) => {
@@ -117,6 +131,7 @@ function AudioVisualizer() {
           .attr('opacity', (d) => {
             return this.opacity;
           })
+          .transition()
           .attr('fill', (d) => {
             if (this.color === 'purple') {
               return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100 - d / 255 * 10) + "%," + (50 + d / 255 * 15) + "%)";
@@ -134,7 +149,8 @@ function AudioVisualizer() {
               // default is orange
               return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
             }
-          });
+          })
+          .duration(75);
       }
     }
 

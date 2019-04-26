@@ -62,7 +62,6 @@ window.onload = function() {
       visualizer.start();
 
       $(window).resize(function() {
-        console.log($(window).width());
         visualizer.setContainerWidth($(window).width())
       });
 

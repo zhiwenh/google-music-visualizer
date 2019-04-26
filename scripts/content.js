@@ -321,10 +321,12 @@ window.onload = function() {
       $('#primaryProgress').css({
         background: colorsArr[colorsIndex][1]
       });
+
       $('#sliderKnobInner').css({
         backgroundColor: colorsArr[colorsIndex][1],
         borderColor: colorsArr[colorsIndex][1]
       });
+
       // change color of icon
       $('#player-bar-play-pause').css({
         color: colorsArr[colorsIndex][1]
@@ -335,6 +337,12 @@ window.onload = function() {
       });
 
       $('#sliderKnob').css({
+        color: colorsArr[colorsIndex][1]
+      });
+
+      $('.slider-knob-inner').css({
+        backgroundColor: colorsArr[colorsIndex][1],
+        borderColor: colorsArr[colorsIndex][1],
         color: colorsArr[colorsIndex][1]
       });
     }

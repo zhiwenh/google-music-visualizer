@@ -61,9 +61,9 @@ window.onload = function() {
       visualizer.initialize();
       visualizer.start();
 
-      $(window).resize(function() {
-        visualizer.setContainerWidth($(window).width())
-      });
+      // $(window).resize(function() {
+      //   visualizer.setContainerWidth($(window).width())
+      // });
 
       visualizers.push(visualizer);
     }

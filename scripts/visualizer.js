@@ -131,7 +131,6 @@ function AudioVisualizer() {
           .attr('opacity', (d) => {
             return this.opacity;
           })
-          .transition()
           .attr('fill', (d) => {
             if (this.color === 'purple') {
               return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100 - d / 255 * 10) + "%," + (50 + d / 255 * 15) + "%)";
@@ -150,7 +149,6 @@ function AudioVisualizer() {
               return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
             }
           })
-          .duration(80);
       }
     }
 

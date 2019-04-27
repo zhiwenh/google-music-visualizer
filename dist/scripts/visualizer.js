@@ -11,6 +11,7 @@ function AudioVisualizer() {
     d = d * this.barHeightScale;
     return (d / 225 * 700 - d);
   };
+  this.barWidth = 25;
 
   this.interval = 20;
   this._intervalHandle = null;
@@ -21,6 +22,8 @@ function AudioVisualizer() {
 
   this.isPlaying = false; // if rendering if on or false
   this.isInitalized = false;
+
+  this._parent = null;
 
   // web audio api variables
   this._context = null; // new AudioContext
@@ -56,6 +59,7 @@ function AudioVisualizer() {
     this._element = audioElement;
     this._source = this._context.createMediaElementSource(this._element);
     this.analyser = this._context.createAnalyser();
+    this._parent = parent;
 
     // d3 equalizer related
     this.container = d3.select(parent).insert('svg').attr('height', this.containerHeight).attr('width', this.containerWidth);
@@ -83,45 +87,69 @@ function AudioVisualizer() {
       .enter()
       .append('rect')
       .attr('x', (d, i) => {
-        return i * (this.containerWidth / this.frequencyData.length);
+        return i * this.barWidth;
       })
-      .attr('width', this.containerWidth / this.frequencyData.length - this.barPadding);
+      .attr('width', this.barWidth - this.barPadding);
   };
 
   this.render = function() {
     this.isPlaying = true;
+    var oneMore = false;
+    var oneMore2 = false;
 
     function render() {
       this.analyser.getByteFrequencyData(this.frequencyData); // now frequencyData array has
-      this.container.selectAll('rect')
-        .data(this.frequencyData)
-        .attr('y', (d) => {
-          return this.containerHeight - this.barHeight(d);
-        })
-        .attr('height', (d) => {
-          return this.barHeight(d);
-        })
-        .attr('opacity', (d) => {
-          return this.opacity;
-        })
-        .attr('fill', (d) => {
-          if (this.color === 'purple') {
-            return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100 - d / 255 * 10) + "%," + (50 + d / 255 * 15) + "%)";
-          } else if (this.color === 'blue') {
-            return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
-          } else if (this.color === 'green') {
-            return "hsl(" + (145 - d / 255 * 135) + "," + (85 + d / 255 * 15) + "%," + (35 + d / 255 * 60) + "%)";
-          } else if (this.color === 'red') {
-            return "hsl(" + (-17 + d / 255 * 15 + d / 255 * 80) + "," + (90 + d / 255 * 10) + "%," + (27 + d / 255 * 65) + "%)";
-          } else if (this.color === 'orange') {
-            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%," + (50 + d / 255 * 15) + "%)";
-          } else if (this.color === 'gray') {
-            return "hsl(" + 180 + "," + (3) + "%," + (97 - d / 255 * 95) + "%)";
-          } else {
-            // default is orange
-            return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
-          }
-        });
+
+      var hasData = false;
+      for (var i = 0; i < this.frequencyData.length; i++) {
+        if (this.frequencyData[i] > 0) {
+          hasData = true;
+          break;
+        }
+      }
+
+      if (hasData === false) {
+        oneMore2 = true;
+      }
+
+      if (hasData === true || oneMore === true) {
+        if (oneMore2 === true) {
+          oneMore2 = false;
+          oneMore = false;
+        } else {
+          oneMore = true;
+        }
+
+        this.container.selectAll('rect')
+          .data(this.frequencyData)
+          .attr('y', (d) => {
+            return this.containerHeight - this.barHeight(d);
+          })
+          .attr('height', (d) => {
+            return this.barHeight(d);
+          })
+          .attr('opacity', (d) => {
+            return this.opacity;
+          })
+          .attr('fill', (d) => {
+            if (this.color === 'purple') {
+              return "hsl(" + (353 - d / 255 * 10 - d / 255 * 150) + "," + (100 - d / 255 * 10) + "%," + (50 + d / 255 * 15) + "%)";
+            } else if (this.color === 'blue') {
+              return "hsl(" + (200 - d / 255 * 10 - d / 255 * 70) + "," + (100) + "%," + (40 + d / 255 * 33) + "%)";
+            } else if (this.color === 'green') {
+              return "hsl(" + (145 - d / 255 * 135) + "," + (85 + d / 255 * 15) + "%," + (35 + d / 255 * 60) + "%)";
+            } else if (this.color === 'red') {
+              return "hsl(" + (-17 + d / 255 * 15 + d / 255 * 80) + "," + (90 + d / 255 * 10) + "%," + (27 + d / 255 * 65) + "%)";
+            } else if (this.color === 'orange') {
+              return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%," + (50 + d / 255 * 15) + "%)";
+            } else if (this.color === 'gray') {
+              return "hsl(" + 180 + "," + (3) + "%," + (97 - d / 255 * 95) + "%)";
+            } else {
+              // default is orange
+              return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
+            }
+          })
+      }
     }
 
     this._intervalHandle = setInterval(render.bind(this), this.interval);
@@ -178,6 +206,7 @@ function AudioVisualizer() {
   this.getBarHeightScale = function() {
     return this.barHeightScale;
   };
+
   this.setBarHeightScale = function(barHeightScale) {
     this.barHeightScale = barHeightScale;
   };
@@ -214,4 +243,31 @@ function AudioVisualizer() {
     clearInterval(this._intervalHandle);
     this.container.remove();
   };
+
+  this.getBarWidth = function() {
+    return this.barWidth;
+  }
+
+  this.setBarWidth = function(barWidth) {
+    this.barWidth = barWidth;
+    this.container
+      .selectAll('rect')
+      .attr('x', (d, i) => {
+        return i * this.barWidth;
+      })
+      .attr('width', this.barWidth - this.barPadding);
+  }
+
+  this.setContainerWidth = function(containerWidth) {
+    this.containerWidth = containerWidth;
+    this.container.attr('width', containerWidth);
+  }
+
+  this.getOpacity = function() {
+    return this.opacity;
+  }
+
+  this.setOpacity = function(opacity) {
+    this.opacity = opacity;
+  }
 }

@@ -142,8 +142,8 @@ window.onload = function() {
     colorChange.css({
       width: '100px',
       paddingTop: '2px',
-      marginRight: '22px',
-      marginLeft: '22px',
+      marginRight: '12px',
+      marginLeft: '12px',
       borderRight: '1px solid #d3d3d3'
     });
 
@@ -177,7 +177,7 @@ window.onload = function() {
       width: '47px'
     });
     speedButtons[2].css({
-      marginRight: '22px'
+      marginRight: '12px'
     });
 
     /* ################################### */
@@ -210,7 +210,7 @@ window.onload = function() {
       width: '35px'
     });
     heightButtons[2].css({
-      marginRight: '22px'
+      marginRight: '12px'
     });
 
     /* ################################### */
@@ -243,7 +243,40 @@ window.onload = function() {
       width: '40px'
     });
     barWidthButtons[2].css({
-      marginRight: '22px'
+      marginRight: '12px'
+    });
+
+    /* ################################### */
+    // OPACITY BUTTONS
+    /* ################################### */
+    var opacityButtons = [];
+    for (i = 0; i < 3; i++) {
+      var opacityButton;
+      if (i === 0) {
+        opacityButton = $('<div>-</div>');
+      } else if (i === 2) {
+        opacityButton = $('<div>+</div>');
+      } else {
+        opacityButton = $('<div></div>');
+      }
+      opacityButton.appendTo(optionsContainer);
+      opacityButton.css(cssDefaults);
+      opacityButton.css({
+        width: '30px',
+        paddingTop: '3px',
+        borderRight: '1px solid #d3d3d3',
+        borderLeft: '1px solid #d3d3d3'
+      });
+      opacityButtons.push(opacityButton);
+    }
+    opacityButtons[1].text(visualizers[0].getOpacity() * 100 + '%');
+    opacityButtons[1].css({
+      cursor: 'default',
+      backgroundColor: 'white',
+      width: '40px'
+    });
+    opacityButtons[2].css({
+      marginRight: '12px'
     });
 
     /* ################################### */
@@ -258,7 +291,7 @@ window.onload = function() {
       paddingLeft: '5px',
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3',
-      marginRight: '22px'
+      marginRight: '12px'
     });
 
     /* ################################### */
@@ -274,6 +307,7 @@ window.onload = function() {
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3'
     });
+
 
     // Options show and hide
     var optionsHidden = true;
@@ -317,42 +351,42 @@ window.onload = function() {
       });
 
       // change text color of the display container and background color
-      buttonContainer.css({
+      buttonContainer.animate({
         color: colorsArr[colorsIndex][1],
-      });
+      }, 80);
 
-      optionsContainer.css({
-        color: colorsArr[colorsIndex][1],
+      optionsContainer.animate({
         backgroundColor: colorsArr[colorsIndex][1]
-      });
+      }, 80);
 
       $('#primaryProgress').css({
-        background: colorsArr[colorsIndex][1]
+        background: colorsArr[colorsIndex][1],
+        color: colorsArr[colorsIndex][1]
       });
 
-      $('#sliderKnobInner').css({
+      $('#sliderKnobInner').animate({
         backgroundColor: colorsArr[colorsIndex][1],
         borderColor: colorsArr[colorsIndex][1]
-      });
+      }, 80);
 
       // change color of icon
-      $('#player-bar-play-pause').css({
+      $('#player-bar-play-pause').animate({
         color: colorsArr[colorsIndex][1]
-      });
+      }, 80);
 
-      $('#progressContainer').css({
-        backgroundColor: colorsArr[colorsIndex][1]
-      });
+      // $('#progressContainer').animate({
+      //   backgroundColor: colorsArr[colorsIndex][1]
+      // }, 100);
 
-      $('#sliderKnob').css({
-        color: colorsArr[colorsIndex][1]
-      });
+      $('#sliderKnob').animate({
+        80: colorsArr[colorsIndex][1]
+      }, 75);
 
-      $('.slider-knob-inner').css({
+      $('.slider-knob-inner').animate({
         backgroundColor: colorsArr[colorsIndex][1],
         borderColor: colorsArr[colorsIndex][1],
         color: colorsArr[colorsIndex][1]
-      });
+      }, 80);
     }
 
     colorChange.on('click', colorToggle);
@@ -422,6 +456,32 @@ window.onload = function() {
           visualizer.setBarWidth(barWidth);
         });
         barWidthButtons[1].text(barWidth + 'px');
+      }
+    });
+
+    // opacity decrease
+    opacityButtons[0].on('click', function() {
+      var opacity = visualizer.getOpacity();
+      if (opacity > 0) {
+        opacity -= 0.05;
+        visualizers.forEach(visualizer => {
+          visualizer.setOpacity(opacity);
+        });
+        var shownOpacity = Math.round(opacity.toFixed(2) * 100);
+        opacityButtons[1].text(shownOpacity + '%');
+      }
+    });
+
+    // opacity increase
+    opacityButtons[2].on('click', function() {
+      var opacity = visualizer.getOpacity();
+      if (opacity < 1) {
+        opacity += 0.05;
+        visualizers.forEach(visualizer => {
+          visualizer.setOpacity(opacity);
+        });
+        var shownOpacity = Math.round(opacity.toFixed(2) * 100);
+        opacityButtons[1].text(shownOpacity + '%');
       }
     });
 

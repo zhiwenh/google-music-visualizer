@@ -150,7 +150,7 @@ function AudioVisualizer() {
               return "hsl(" + (0  + d / 255 * 12 + d / 255 * 67) + ",95%,55%)";
             }
           })
-          .duration(75);
+          .duration(80);
       }
     }
 
@@ -208,6 +208,7 @@ function AudioVisualizer() {
   this.getBarHeightScale = function() {
     return this.barHeightScale;
   };
+
   this.setBarHeightScale = function(barHeightScale) {
     this.barHeightScale = barHeightScale;
   };
@@ -262,5 +263,13 @@ function AudioVisualizer() {
   this.setContainerWidth = function(containerWidth) {
     this.containerWidth = containerWidth;
     this.container.attr('width', containerWidth);
+  }
+
+  this.getOpacity = function() {
+    return this.opacity;
+  }
+
+  this.setOpacity = function(opacity) {
+    this.opacity = opacity;
   }
 }

@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Visualizer v 1.2.1 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v 1.2.3 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -62,13 +62,14 @@ window.onload = function() {
       visualizer.initialize();
       visualizer.start();
 
-      // $(window).resize(function() {
-      //   visualizer.setContainerWidth($(window).width())
-      // });
-
       visualizers.push(visualizer);
     }
 
+    $(window).resize(function() {
+      for (var i = 0; i < visualizers.length; i++) {
+        visualizers[i].setContainerWidth($(window).width())
+      }
+    });
 
     /* ################################### */
     // GOOGLE MUSIC BUTTON DISPLAY

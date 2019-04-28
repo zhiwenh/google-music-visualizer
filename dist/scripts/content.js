@@ -37,6 +37,7 @@ window.onload = function() {
         frequencyDataDivide: 9,
         barPadding: 1.7,
         barWidth: 25,
+        barHeightScale: 0.5,
         containerWidth: $(window).width()
       });
 
@@ -142,8 +143,8 @@ window.onload = function() {
     colorChange.css({
       width: '100px',
       paddingTop: '2px',
-      marginRight: '12px',
-      marginLeft: '12px',
+      marginRight: '22px',
+      marginLeft: '22px',
       borderRight: '1px solid #d3d3d3'
     });
 
@@ -177,7 +178,7 @@ window.onload = function() {
       width: '47px'
     });
     speedButtons[2].css({
-      marginRight: '12px'
+      marginRight: '22px'
     });
 
     /* ################################### */
@@ -210,7 +211,7 @@ window.onload = function() {
       width: '35px'
     });
     heightButtons[2].css({
-      marginRight: '12px'
+      marginRight: '22px'
     });
 
     /* ################################### */
@@ -243,7 +244,7 @@ window.onload = function() {
       width: '40px'
     });
     barWidthButtons[2].css({
-      marginRight: '12px'
+      marginRight: '22px'
     });
 
     /* ################################### */
@@ -276,7 +277,7 @@ window.onload = function() {
       width: '40px'
     });
     opacityButtons[2].css({
-      marginRight: '12px'
+      marginRight: '22px'
     });
 
     /* ################################### */
@@ -291,7 +292,7 @@ window.onload = function() {
       paddingLeft: '5px',
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3',
-      marginRight: '12px'
+      marginRight: '22px'
     });
 
     /* ################################### */

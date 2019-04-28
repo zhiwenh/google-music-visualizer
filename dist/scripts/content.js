@@ -37,7 +37,7 @@ window.onload = function() {
         frequencyDataDivide: 9,
         barPadding: 1.7,
         barWidth: 25,
-        barHeightScale: 0.5,
+        barHeightScale: 0.3,
         containerWidth: $(window).width()
       });
 

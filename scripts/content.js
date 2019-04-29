@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Visualizer v 1.2.3 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v 1.2.5 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -55,7 +55,6 @@ window.onload = function() {
         position: 'absolute',
         top: visualizer.containerHeight * -1,
         left: 0,
-        'z-index': 10000,
         'pointer-events': 'none'
       });
 
@@ -376,13 +375,6 @@ window.onload = function() {
         color: colorsArr[colorsIndex][1]
       }, 80);
 
-      // $('#progressContainer').animate({
-      //   backgroundColor: colorsArr[colorsIndex][1]
-      // }, 100);
-
-      $('#sliderKnob').animate({
-        80: colorsArr[colorsIndex][1]
-      }, 75);
 
       $('.slider-knob-inner').animate({
         backgroundColor: colorsArr[colorsIndex][1],
@@ -517,5 +509,4 @@ window.onload = function() {
       }
     });
   }
-
 };

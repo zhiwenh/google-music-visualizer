@@ -89,7 +89,10 @@ function AudioVisualizer() {
       .attr('x', (d, i) => {
         return i * this.barWidth;
       })
-      .attr('width', this.barWidth - this.barPadding);
+      .attr('width', this.barWidth - this.barPadding)
+      .attr('opacity', (d) => {
+        return this.opacity;
+      })
   };
 
   this.render = function() {
@@ -127,9 +130,6 @@ function AudioVisualizer() {
           })
           .attr('height', (d) => {
             return this.barHeight(d);
-          })
-          .attr('opacity', (d) => {
-            return this.opacity;
           })
           .attr('fill', (d) => {
             if (this.color === 'purple') {
@@ -269,5 +269,9 @@ function AudioVisualizer() {
 
   this.setOpacity = function(opacity) {
     this.opacity = opacity;
+    this.container.selectAll('rect')
+      .attr('opacity', (d) => {
+        return this.opacity;
+      })
   }
 }

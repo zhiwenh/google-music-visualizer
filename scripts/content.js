@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Visualizer v 1.2.5 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v 1.2.6 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {

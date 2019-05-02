@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Visualizer v 1.2.6 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v 1.2.7 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -310,6 +310,10 @@ window.onload = function() {
     });
 
 
+    /* ################################### */
+    // EVENT HANDLERS
+    /* ################################### */
+
     // Options show and hide
     var optionsHidden = true;
     function optionsToggle() {
@@ -370,17 +374,26 @@ window.onload = function() {
         borderColor: colorsArr[colorsIndex][1]
       }, 80);
 
-      // change color of icon
       $('#player-bar-play-pause').animate({
         color: colorsArr[colorsIndex][1]
       }, 80);
 
 
-      $('.slider-knob-inner').animate({
+      $('#material-player-progress .slider-knob-inner').animate({
         backgroundColor: colorsArr[colorsIndex][1],
         borderColor: colorsArr[colorsIndex][1],
         color: colorsArr[colorsIndex][1]
       }, 80);
+
+      $('#sliderContainer').animate({
+        // backgroundColor: colorsArr[colorsIndex][1],
+        // borderColor: colorsArr[colorsIndex][1],
+        color: colorsArr[colorsIndex][1]
+      }, 80);
+
+      $('#progressContainer').css({
+        color: colorsArr[colorsIndex][1]
+      });
     }
 
     colorChange.on('click', colorToggle);

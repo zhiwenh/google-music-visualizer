@@ -2,14 +2,15 @@
   "manifest_version": 2,
   "name": "Google Music Visualizer",
   "description": "An audio visualizer for Google Play Music.",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "icons": {
     "16": "icons/icon.png",
     "48": "icons/icon.png",
     "128": "icons/icon.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "browser_action": {
     "default_icon": "icons/icon.png",

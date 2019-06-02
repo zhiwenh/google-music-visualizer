@@ -3,7 +3,7 @@
 // imports jquery
 
 window.onload = function() {
-  console.log('Google Music Visualizer v 1.2.7 - by Zhiwen Huang');
+  console.log('Google Music Visualizer v. 1.2.8 - by Zhiwen Huang');
   /** Looks for audio element after a second then intervals of half seconds */
   setTimeout(function() {
     var findAudioInterval = setInterval(function() {
@@ -298,7 +298,7 @@ window.onload = function() {
     /* ################################### */
     // OFF visualizer BUTTON
     /* ################################### */
-    var off = $('<div>off</div>');
+    var off = $('<div>on</div>');
     off.appendTo(optionsContainer);
     off.css(cssDefaults);
     off.css({
@@ -342,11 +342,13 @@ window.onload = function() {
     ];
 
     // toggles the different color themes
-    function colorToggle() {
-      if (colorsIndex === colorsArr.length - 1) {
-        colorsIndex = 0;
-      } else {
-        colorsIndex++;
+    function colorToggle(initial) {
+      if (initial !== true) {
+        if (colorsIndex === colorsArr.length - 1) {
+          colorsIndex = 0;
+        } else {
+          colorsIndex++;
+        }
       }
       colorChange.text('theme ' + colorsArr[colorsIndex][0]);
 
@@ -394,81 +396,89 @@ window.onload = function() {
       $('#progressContainer').css({
         color: colorsArr[colorsIndex][1]
       });
+
+      chrome.storage.local.set({colorsIndex: colorsIndex});
     }
 
     colorChange.on('click', colorToggle);
 
     // slow down
     speedButtons[0].on('click', function() {
-      if (visualizer.getInterval() < 100) {
+      if (visualizers[0].getInterval() < 100) {
         visualizers.forEach(visualizer => {
           visualizer.slower(5);
         });
-        speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+        speedButtons[1].text(Math.floor(1000 / visualizers[0].getInterval()) + ' Hz');
+        chrome.storage.local.set({speed: visualizers[0].getInterval()});
       }
     });
 
     // speed up
     speedButtons[2].on('click', function() {
-      if (visualizer.getInterval() > 5) {
+      if (visualizers[0].getInterval() > 5) {
         visualizers.forEach(visualizer => {
           visualizer.faster(5);
         });
         speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+        chrome.storage.local.set({speed: visualizer.getInterval()});
       }
     });
 
     // height decrease
     heightButtons[0].on('click', function() {
-      var barHeightScale = visualizer.getBarHeightScale();
+      var barHeightScale = visualizers[0].getBarHeightScale();
       if (barHeightScale > 0.1) {
         barHeightScale -= 0.1;
         visualizers.forEach(visualizer => {
           visualizer.setBarHeightScale(barHeightScale);
         });
         heightButtons[1].text(barHeightScale.toFixed(1)+ 'x');
+        chrome.storage.local.set({height: visualizer.getBarHeightScale()});
       }
     });
 
     // height increase
     heightButtons[2].on('click', function() {
-      var barHeightScale = visualizer.getBarHeightScale();
+      var barHeightScale = visualizers[0].getBarHeightScale();
       if (barHeightScale < 2) {
         barHeightScale += 0.1;
         visualizers.forEach(visualizer => {
           visualizer.setBarHeightScale(barHeightScale);
         });
         heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
+        chrome.storage.local.set({height: visualizer.getBarHeightScale()});
       }
     });
 
     // bar width decrease
     barWidthButtons[0].on('click', function() {
-      var barWidth = visualizer.getBarWidth();
+      var barWidth = visualizers[0].getBarWidth();
       if (barWidth > 15) {
         barWidth -= 1;
         visualizers.forEach(visualizer => {
           visualizer.setBarWidth(barWidth);
         });
         barWidthButtons[1].text(barWidth + 'px');
+        chrome.storage.local.set({width: visualizer.getBarWidth()});
       }
     });
 
     // bar width increase
     barWidthButtons[2].on('click', function() {
-      var barWidth = visualizer.getBarWidth();
+      var barWidth = visualizers[0].getBarWidth();
       if (barWidth < 50) {
         barWidth += 1;
         visualizers.forEach(visualizer => {
           visualizer.setBarWidth(barWidth);
         });
         barWidthButtons[1].text(barWidth + 'px');
+        chrome.storage.local.set({width: visualizer.getBarWidth()});
       }
     });
 
     // opacity decrease
     opacityButtons[0].on('click', function() {
-      var opacity = visualizer.getOpacity();
+      var opacity = visualizers[0].getOpacity();
       if (opacity > 0) {
         opacity -= 0.05;
         visualizers.forEach(visualizer => {
@@ -476,12 +486,13 @@ window.onload = function() {
         });
         var shownOpacity = Math.round(opacity.toFixed(2) * 100);
         opacityButtons[1].text(shownOpacity + '%');
+        chrome.storage.local.set({opacity: visualizer.getOpacity()});
       }
     });
 
     // opacity increase
     opacityButtons[2].on('click', function() {
-      var opacity = visualizer.getOpacity();
+      var opacity = visualizers[0].getOpacity();
       if (opacity < 1) {
         opacity += 0.05;
         visualizers.forEach(visualizer => {
@@ -489,24 +500,7 @@ window.onload = function() {
         });
         var shownOpacity = Math.round(opacity.toFixed(2) * 100);
         opacityButtons[1].text(shownOpacity + '%');
-      }
-    });
-
-    // ON/OFF
-    var isOn = false;
-    off.on('click', function() {
-      if (isOn === false) {
-        isOn = true;
-        visualizers.forEach(visualizer => {
-          visualizer.stop();
-        });
-        off.text('on');
-      } else {
-        isOn = false;
-        visualizers.forEach(visualizer => {
-          visualizer.start();
-        });
-        off.text('off');
+        chrome.storage.local.set({opacity: visualizer.getOpacity()});
       }
     });
 
@@ -521,5 +515,66 @@ window.onload = function() {
         whatMode = 'player';
       }
     });
+
+    // ON/OFF
+    var isOn = true;
+    off.on('click', function() {
+      if (isOn === true) {
+        isOn = false;
+        visualizers.forEach(visualizer => {
+          visualizer.stop();
+        });
+        off.text('off');
+        chrome.storage.local.set({on: false})
+      } else {
+        isOn = true;
+        visualizers.forEach(visualizer => {
+          visualizer.start();
+        });
+        off.text('on');
+        chrome.storage.local.set({on: true})
+      }
+    });
+
+    chrome.storage.local.get([
+      'colorsIndex',
+      'speed',
+      'height',
+      'width',
+      'opacity',
+      'on'
+    ], function(result) {
+      if (result.colorsIndex) {
+        colorsIndex = result.colorsIndex;
+        colorToggle(true);
+      }
+      visualizers.forEach(visualizer => {
+        if (result.speed) {
+          visualizer.setInterval(result.speed);
+          speedButtons[1].text(Math.floor(1000 / visualizer.getInterval()) + ' Hz');
+        }
+        if (result.height) {
+          visualizer.setBarHeightScale(result.height);
+          const barHeightScale = visualizer.getBarHeightScale();
+          heightButtons[1].text(barHeightScale.toFixed(1) + 'x');
+        }
+        if (result.width) {
+          visualizer.setBarWidth(result.width);
+          const barWidth = visualizer.getBarWidth();
+          barWidthButtons[1].text(barWidth + 'px');
+        }
+        if (result.opacity) {
+          visualizer.setOpacity(result.opacity);
+          var shownOpacity = Math.round(visualizer.getOpacity().toFixed(2) * 100);
+          opacityButtons[1].text(shownOpacity + '%');
+        }
+        if (result.on === false) {
+          visualizer.stop();
+          isOn = false;
+          off.text('off');
+        }
+      });
+    });
+
   }
 };

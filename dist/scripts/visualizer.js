@@ -168,7 +168,9 @@ function AudioVisualizer() {
     return this.interval;
   };
   this.setInterval = function(interval) {
+    this.pause();
     this.interval = interval;
+    this.resume();
   };
 
   // speeds up the interval

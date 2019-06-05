@@ -99,10 +99,10 @@ window.onload = function() {
     var cssDefaults = {
       textAlign: 'center',
       boxSizing: 'border-box',
-      backgroundColor: 'white',
       height: '100%',
       outline: 'none',
       cursor: 'pointer',
+      backgroundColor: 'white'
     };
 
     /* ################################### */
@@ -116,7 +116,7 @@ window.onload = function() {
       paddingTop: '2px',
       paddingRight: '3px',
       width: '130px',
-      border: '1px solid #d3d3d3'
+      border: '1px solid #d3d3d3',
     });
 
     /* ################################### */
@@ -145,7 +145,8 @@ window.onload = function() {
       paddingTop: '2px',
       marginRight: '22px',
       marginLeft: '22px',
-      borderRight: '1px solid #d3d3d3'
+      borderRight: '1px solid #d3d3d3',
+      borderLeft: '1px solid #d3d3d3',
     });
 
     /* ################################### */
@@ -174,8 +175,7 @@ window.onload = function() {
     speedButtons[1].text(Math.floor(1000 / visualizers[0].getInterval()) + ' Hz');
     speedButtons[1].css({
       cursor: 'default',
-      backgroundColor: 'white',
-      width: '47px'
+      width: '47px',
     });
     speedButtons[2].css({
       marginRight: '22px'
@@ -207,8 +207,7 @@ window.onload = function() {
     heightButtons[1].text(visualizers[0].getBarHeightScale() + 'x');
     heightButtons[1].css({
       cursor: 'default',
-      backgroundColor: 'white',
-      width: '35px'
+      width: '35px',
     });
     heightButtons[2].css({
       marginRight: '22px'
@@ -240,8 +239,7 @@ window.onload = function() {
     barWidthButtons[1].text(visualizers[0].getBarWidth() + 'px');
     barWidthButtons[1].css({
       cursor: 'default',
-      backgroundColor: 'white',
-      width: '40px'
+      width: '40px',
     });
     barWidthButtons[2].css({
       marginRight: '22px'
@@ -273,8 +271,7 @@ window.onload = function() {
     opacityButtons[1].text(visualizers[0].getOpacity() * 100 + '%');
     opacityButtons[1].css({
       cursor: 'default',
-      backgroundColor: 'white',
-      width: '40px'
+      width: '40px',
     });
     opacityButtons[2].css({
       marginRight: '22px'
@@ -292,7 +289,8 @@ window.onload = function() {
       paddingLeft: '5px',
       paddingRight: '5px',
       borderLeft: '1px solid #d3d3d3',
-      marginRight: '22px'
+      borderRight: '1px solid #d3d3d3',
+      marginRight: '22px',
     });
 
     /* ################################### */
@@ -306,7 +304,7 @@ window.onload = function() {
       paddingTop: '2px',
       paddingLeft: '5px',
       paddingRight: '5px',
-      borderLeft: '1px solid #d3d3d3'
+      borderLeft: '1px solid #d3d3d3',
     });
 
 
@@ -366,14 +364,15 @@ window.onload = function() {
         backgroundColor: colorsArr[colorsIndex][1]
       }, 80);
 
-      $('#primaryProgress').css({
+      $('#primaryProgress.style-scope paper-progress').animate({
         background: colorsArr[colorsIndex][1],
         color: colorsArr[colorsIndex][1]
-      });
+      }, 80);
 
       $('#sliderKnobInner').animate({
         backgroundColor: colorsArr[colorsIndex][1],
-        borderColor: colorsArr[colorsIndex][1]
+        borderColor: colorsArr[colorsIndex][1],
+        color: colorsArr[colorsIndex][1]
       }, 80);
 
       $('#player-bar-play-pause').animate({
@@ -393,9 +392,18 @@ window.onload = function() {
         color: colorsArr[colorsIndex][1]
       }, 80);
 
-      $('#progressContainer').css({
+      $('#progressContainer').animate({
         color: colorsArr[colorsIndex][1]
-      });
+      }, 80);
+
+      $('.slider-knob-inner').animate({
+        backgroundColor: colorsArr[colorsIndex][1],
+        border: colorsArr[colorsIndex][1]
+      }, 80);
+
+      $('#primaryProgress.style-scope.paper-progress').animate({
+        background: colorsArr[colorsIndex][1]
+      }, 80);
 
       chrome.storage.local.set({colorsIndex: colorsIndex});
     }
@@ -542,7 +550,8 @@ window.onload = function() {
       'height',
       'width',
       'opacity',
-      'on'
+      'on',
+      'optionsHidden'
     ], function(result) {
       if (result.colorsIndex) {
         colorsIndex = result.colorsIndex;
